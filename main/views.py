@@ -12,6 +12,7 @@ class Userdetail(APIView):
     permission_classes = (AllowAny,)
     def post(self, request):
         uuid = self.request.query_params.get('id', None)
+
         file = request.FILES['file']
         decoded_file = file.read().decode()
         io_string = io.StringIO(decoded_file)
