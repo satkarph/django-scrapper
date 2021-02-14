@@ -25,7 +25,14 @@ SECRET_KEY = '-&jb+@go=8=z7mofwzpinybf77$d!x4$m84l0o-%c%^c+9!klc'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
+# Allow CROS
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = (
+           'https://qa-crm.epoints.com',
+            'localhost:4200',
+            'https://crm.epoints.com'
+    )
 
 
 # Application definition
