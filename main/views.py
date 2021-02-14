@@ -24,4 +24,4 @@ class Userdetail(APIView):
         print(task)
         # a = scraper_spectra(uuid)
         content={"task_id":task}
-        return Response("task")
+        return Response(content)
