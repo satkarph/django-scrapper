@@ -58,4 +58,4 @@ def go_to_sleep(self, duration):
     print(url)
     File.objects.create(name="spectrapremium",url=url)
 
-    return 'Done'
+    return url
