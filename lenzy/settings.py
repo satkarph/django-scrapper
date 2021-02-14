@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ["*"]
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = (
            'https://qa-crm.epoints.com',
-            'localhost:4200',
+            'localhost:3000',
             'https://crm.epoints.com'
     )
 

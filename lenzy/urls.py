@@ -15,10 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,re_path,include
-from main.views import Userdetail
+from main.views import Userdetail,Airtex,Mootors,Autoparts,Carter
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('airtex/', Airtex.as_view()),
+
     path('check/',Userdetail.as_view()),
-path('celery-progress/', include('celery_progress.urls')),
+    path('usmotors/',Mootors.as_view()),
+    path('autoparts/', Autoparts.as_view()),
+    path('carter/', Carter.as_view()),
+
+    path('celery-progress/', include('celery_progress.urls')),
 ]
