@@ -23,5 +23,5 @@ class Userdetail(APIView):
         task = go_to_sleep.delay(list(reader))
         print(task)
         # a = scraper_spectra(uuid)
-        content={"task_id":task}
+        content={"task_id":str(task)}
         return Response(content)
