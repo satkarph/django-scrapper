@@ -44,7 +44,7 @@ def go_to_sleep(self, duration):
             wr.writerow(a[0])
 
         a= File.objects.all().count()+1
-        filename="spectrapremium"+a
+        filename="spectrapremium"+str(a)
         s3 = boto3.resource('s3')
         bucketname = "scrapers1"
         folder = "spectrapremium"
