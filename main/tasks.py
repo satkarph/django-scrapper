@@ -43,15 +43,19 @@ def go_to_sleep(self, duration):
             progress_recorder.set_progress(i+1, total, row[0])
             wr.writerow(a[0])
 
-        a= File.objects.all().count()+1
-        filename="spectrapremium"+str(a)
-        s3 = boto3.resource('s3')
-        bucketname = "scrapers1"
-        folder = "spectrapremium"
-        s3.Bucket(bucketname).put_object(ContentType= "application/CSV", ACL='public-read',
-                                         Key='{0}/{1}'.format(folder, filename), Body=myfile)
-        url = "https://{0}.s3.amazonaws.com/{1}/{2}".format(bucketname, folder, filename)
-        print(url)
-        File.objects.create(name="spectrapremium",url=url)
+
+    f = open("ecat.csv", "r", encoding='utf-8')
+    g=f.read()
+
+    a= File.objects.all().count()+1
+    filename="spectrapremium"+str(a)
+    s3 = boto3.resource('s3')
+    bucketname = "scrapers1"
+    folder = "spectrapremium"
+    s3.Bucket(bucketname).put_object(ContentType= "'text/csv'", ACL='public-read',
+                                     Key='{0}/{1}'.format(folder, filename), Body=g)
+    url = "https://{0}.s3.amazonaws.com/{1}/{2}".format(bucketname, folder, filename)
+    print(url)
+    File.objects.create(name="spectrapremium",url=url)
 
     return 'Done'
