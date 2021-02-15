@@ -17,7 +17,7 @@ class Userdetail(APIView):
 
         file = request.FILES['file']
         wb = openpyxl.load_workbook(file)
-        worksheet = wb["Sheet1"]
+        worksheet = wb.active
 
         data = []
         for row in worksheet.iter_rows():
@@ -47,7 +47,7 @@ class Airtex(APIView):
 
         file = request.FILES['file']
         wb = openpyxl.load_workbook(file)
-        worksheet = wb["Sheet1"]
+        worksheet = wb.active
 
         data = []
         for row in worksheet.iter_rows():
@@ -70,7 +70,9 @@ class Mootors(APIView):
 
         file = request.FILES['file']
         wb = openpyxl.load_workbook(file)
-        worksheet = wb["Sheet1"]
+
+
+        worksheet = wb.active
 
         data = []
         for row in worksheet.iter_rows():
@@ -93,7 +95,7 @@ class Autoparts(APIView):
 
         file = request.FILES['file']
         wb = openpyxl.load_workbook(file)
-        worksheet = wb["Sheet1"]
+        worksheet = wb.active
 
         data = []
         for row in worksheet.iter_rows():
@@ -115,7 +117,7 @@ class Carter(APIView):
         uuid = self.request.query_params.get('id', None)
         file = request.FILES['file']
         wb = openpyxl.load_workbook(file)
-        worksheet = wb["Sheet1"]
+        worksheet = wb.active
 
         data = []
         for row in worksheet.iter_rows():
@@ -137,7 +139,7 @@ class Opticat(APIView):
 
         file = request.FILES['file']
         wb = openpyxl.load_workbook(file)
-        worksheet = wb["Sheet1"]
+        worksheet = wb.active
 
         data = []
         for row in worksheet.iter_rows():
@@ -157,7 +159,7 @@ class Standard(APIView):
 
         file = request.FILES['file']
         wb = openpyxl.load_workbook(file)
-        worksheet = wb["Sheet1"]
+        worksheet = wb.active
 
         data = []
         for row in worksheet.iter_rows():
@@ -179,7 +181,7 @@ class BWD(APIView):
 
         file = request.FILES['file']
         wb = openpyxl.load_workbook(file)
-        worksheet = wb["Sheet1"]
+        worksheet = wb.active
 
         data = []
         for row in worksheet.iter_rows():
