@@ -436,3 +436,53 @@ def scraper_standard(part_id):
 
     driver.quit()
     return found_values
+
+
+def scraper_BWD(part_id):
+    driver = webdriver.Firefox(firefox_options=chrome_options)
+    driver.get('https://www.bwdbrand.com/en')
+    part_found = 1
+    found_values = []
+    timeout = 15
+    try:
+        element_present = EC.presence_of_element_located(
+            (By.XPATH, '//*[@id="dynEcat"]/div/div[2]/div[2]/div[2]/div/input'))
+        WebDriverWait(driver, timeout).until(element_present)
+    except TimeoutException:
+        print("Timed out waiting for page to load")
+    input_element = driver.find_element_by_xpath('//*[@id="dynEcat"]/div/div[2]/div[2]/div[2]/div/input')
+    input_element.send_keys(part_id)
+    input_element.send_keys(Keys.ENTER)
+    driver.switch_to.frame(driver.find_element_by_id("eCatFrame"))
+    try:
+        element_present = EC.presence_of_element_located((By.XPATH,'//*[@id="eCat"]/div/section/div/div[1]/div/div[4]/div[2]/div[1]/div[1]/div[2]/a/p'))
+        WebDriverWait(driver, timeout).until(element_present)
+    except TimeoutException:
+        part_found = 0
+        print("Timed out waiting for page to load")
+    if (part_found == 1):
+        time.sleep(2)
+        #print(part_id)
+        table_elements = driver.find_elements_by_xpath('//*[@id="eCat"]/div/section/div/div[1]/div/div[4]/div[2]/div[1]/div')
+        for i in range(len(table_elements)):
+            found_values.append([])
+            found_values[i].append(part_id)
+            mfg_part = driver.find_element_by_xpath('//*[@id="eCat"]/div/section/div/div[1]/div/div[4]/div[2]/div[1]/div['+str(i+1)+']/div[2]/a/p')
+            #print(mfg_part.text)
+            found_values[i].append(mfg_part.text)
+            product_type = driver.find_element_by_xpath('//*[@id="eCat"]/div/section/div/div[1]/div/div[4]/div[2]/div[1]/div['+str(i+1)+']/div[2]/div[1]/p')
+            #print(product_type.text)
+            found_values[i].append(product_type.text)
+            manufacturer = driver.find_element_by_xpath('//*[@id="eCat"]/div/section/div/div[1]/div/div[4]/div[2]/div[1]/div['+str(i+1)+']/div[2]/div[5]/ul/li[1]/span[2]')
+            #print(manufacturer.text)
+            found_values[i].append(manufacturer.text)
+            product_number = driver.find_element_by_xpath('//*[@id="eCat"]/div/section/div/div[1]/div/div[4]/div[2]/div[1]/div['+str(i+1)+']/div[2]/div[5]/ul/li[2]/span[2]')
+            #print(product_number.text)
+            found_values[i].append(product_number.text)
+    else:
+        found_values.append([])
+        found_values[0].append(part_id)
+        found_values[0].append('Nothing found.')
+
+    driver.quit()
+    return found_values

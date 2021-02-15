@@ -30,8 +30,11 @@ ALLOWED_HOSTS = ["*"]
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = (
            'https://qa-crm.epoints.com',
-            'localhost:3000',
-            'https://crm.epoints.com'
+            'http://localhost:3000/',
+            'https://crm.epoints.com',
+            'http://lenzy-hosting.s3-website-us-east-1.amazonaws.com/',
+            'lenzy-hosting.s3-website-us-east-1.amazonaws.com'
+
     )
 
 

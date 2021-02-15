@@ -1,6 +1,6 @@
 from celery import shared_task
 from celery_progress.backend import ProgressRecorder
-from .utils import scraper_spectra,airtex,scraper_usmotorworks,scraper_densoautoparts,scraper_carter,scraper_opticat,scraper_standard
+from .utils import scraper_spectra,airtex,scraper_usmotorworks,scraper_densoautoparts,scraper_carter,scraper_opticat,scraper_standard,scraper_BWD
 import csv
 import boto3
 import time
@@ -240,6 +240,35 @@ def standard(self, duration):
     url = "https://{0}.s3.amazonaws.com/{1}/{2}".format(bucketname, folder, filename)
     print(url)
     File.objects.create(name="Standard",url=url)
+    return url
+
+@shared_task(bind=True)
+def bwd(self, duration):
+    progress_recorder = ProgressRecorder(self)
+    with open("bwd.csv", 'w') as myfile:
+        wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+        wr.writerow(["Input Part # (Mfg. Part Number)","Output - Part Number#","Part Type (Product Mfg. Name)","OE Number (Item/Part Description)"])
+        total = len(duration)
+        for i,row in enumerate(duration):
+            a = scraper_BWD(row[0])
+            print(a)
+            progress_recorder.set_progress(i+1, total, row[0])
+            for b in a:
+                wr.writerow(b)
+
+    f = open("bwd.csv", "r", encoding='utf-8')
+    g =f.read()
+    #
+    a = File.objects.all().count()+1
+    filename="bwd"+str(a)
+    s3 = boto3.resource('s3')
+    bucketname = "scrapers1"
+    folder = "BWD"
+    s3.Bucket(bucketname).put_object(ContentType= "'text/csv'", ACL='public-read',
+                                     Key='{0}/{1}'.format(folder, filename), Body=g)
+    url = "https://{0}.s3.amazonaws.com/{1}/{2}".format(bucketname, folder, filename)
+    print(url)
+    File.objects.create(name="BWD",url=url)
     return url
 
 
