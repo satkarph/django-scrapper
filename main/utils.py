@@ -316,3 +316,123 @@ def scraper_carter(part_id):
 
     driver.quit()
     return found_values
+
+
+def scraper_opticat(part_id):
+    driver = webdriver.Firefox(firefox_options=chrome_options)
+    driver.get('https://www.opticatonline.com/')
+    part_found = 1
+    found_values = []
+    timeout = 10
+    try:
+        element_present = EC.presence_of_element_located(
+            (By.XPATH, '/html/body/header/div[1]/div[2]/div/div[1]/form/div/input'))
+        WebDriverWait(driver, timeout).until(element_present)
+    except TimeoutException:
+        print("Timed out waiting for page to load")
+    input_element = driver.find_element_by_xpath('/html/body/header/div[1]/div[2]/div/div[1]/form/div/input')
+    input_element.send_keys(part_id)
+    input_element.send_keys(Keys.ENTER)
+
+    try:
+        element_present = EC.presence_of_element_located((By.XPATH, '/html/body/section/div/div/div[2]/table/tbody/tr'))
+        WebDriverWait(driver, timeout).until(element_present)
+    except TimeoutException:
+        print("Timed out waiting for page to load")
+        part_found = 0
+
+    if (part_found == 1):
+        table_elements = driver.find_elements_by_xpath('/html/body/section/div/div/div[2]/table/tbody/tr')
+
+        for i in range(len(table_elements)):
+            found_values.append([])
+            # print(part_id)
+            found_values[i].append(part_id)
+            article_number = driver.find_element_by_xpath(
+                '/html/body/section/div/div/div[2]/table/tbody/tr[' + str(i + 1) + ']/td[4]/a')
+            # print(article_number.text)
+            found_values[i].append(article_number.text)
+            desired_values = driver.find_elements_by_xpath(
+                '/html/body/section/div/div/div[2]/table/tbody/tr[' + str(i + 1) + ']/td[6]/div')
+            j = 0
+            for value in desired_values:
+                j += 1
+                if ('OE' in value.text):
+                    # print(value.text)
+                    found_values[i].append(value.text[11:])
+                if (j == 1):
+                    # print(value.text)
+                    found_values[i].append(value.text)
+
+    else:
+        found_values.append([])
+        found_values[0].append(part_id)
+        found_values[0].append('Nothing found.')
+
+    driver.quit()
+    return found_values
+
+
+def scraper_standard(part_id):
+    driver = webdriver.Firefox(firefox_options=chrome_options)
+    driver.get('https://ecatalog.smpcorp.com/std/#/vehicles')
+    part_found = 1
+    found_values = []
+    timeout = 10
+    try:
+        element_present = EC.presence_of_element_located(
+            (By.XPATH, '//*[@id="header-view"]/div[3]/input[2]'))
+        WebDriverWait(driver, timeout).until(element_present)
+    except TimeoutException:
+        print("Timed out waiting for page to load")
+    checkbox = driver.find_element_by_xpath('//*[@id="header-view"]/div[3]/input[2]')
+    checkbox.click()
+
+    try:
+        element_present = EC.presence_of_element_located((By.XPATH, '//*[@id="header-view"]/div[3]/input[1]'))
+        WebDriverWait(driver, timeout).until(element_present)
+    except TimeoutException:
+        print("Timed out waiting for page to load")
+    input_element = driver.find_element_by_xpath('//*[@id="header-view"]/div[3]/input[1]')
+    input_element.send_keys(part_id)
+    input_element.send_keys(Keys.ENTER)
+
+    try:
+        element_present = EC.presence_of_element_located((By.XPATH, '//*[@id="catFilterContainer"]/li/a/span'))
+        WebDriverWait(driver, timeout).until(element_present)
+    except TimeoutException:
+        part_found = 0
+        print("Timed out waiting for page to load")
+
+    if (part_found == 1):
+        # print(part_id)
+        part_type = driver.find_element_by_xpath('//*[@id="catFilterContainer"]/li/a/span')
+        # print(part_type.text)
+        table_elements = driver.find_elements_by_xpath(
+            '//*[@id="searchresults-view"]/div[3]/div/div/div[2]/div[2]/ul/li')
+        for i in range(len(table_elements)):
+            found_values.append([])
+            found_values[i].append(part_id)
+            found_values[i].append(part_type.text)
+            mfg_part = driver.find_element_by_xpath(
+                '//*[@id="searchresults-view"]/div[3]/div/div/div[2]/div[2]/ul/li[' + str(
+                    i + 1) + ']/div[2]/div[1]/a/span')
+            # print(mfg_part.text)
+            found_values[i].append(mfg_part.text)
+            product = driver.find_element_by_xpath(
+                '//*[@id="searchresults-view"]/div[3]/div/div/div[2]/div[2]/ul/li[' + str(
+                    i + 1) + ']/div[2]/div[1]/span[2]')
+            # print(product.text)
+            found_values[i].append(product.text)
+            manufacturer = driver.find_element_by_xpath(
+                '//*[@id="searchresults-view"]/div[3]/div/div/div[2]/div[2]/ul/li[' + str(
+                    i + 1) + ']/div[2]/div[2]/small[2]/span')
+            # print(manufacturer.text)
+            found_values[i].append(manufacturer.text)
+    else:
+        found_values.append([])
+        found_values[0].append(part_id)
+        found_values[0].append('Nothing found.')
+
+    driver.quit()
+    return found_values
