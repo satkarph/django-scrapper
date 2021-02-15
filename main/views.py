@@ -24,6 +24,10 @@ class Userdetail(APIView):
             for cell in row:
                 data.append(str(cell.value))
 
+        data = list(filter(None, data))
+        data = [d for d in data if d!="None"]
+        print(data)
+        print("ddddd")
 
         # a= file.read()
         # print(a)
@@ -33,7 +37,7 @@ class Userdetail(APIView):
         # reader = csv.reader(io_string)
 
         # go_to_sleep.delay(uuid=["16147161387"])
-
+        #
         task = go_to_sleep.delay(data)
         print(task)
         # a = scraper_spectra(uuid)
@@ -55,7 +59,8 @@ class Airtex(APIView):
                 data.append(str(cell.value))
 
         # go_to_sleep.delay(uuid=["16147161387"])
-
+        data = list(filter(None, data))
+        data = [d for d in data if d != "None"]
         task = sairtex.delay(data)
         print(task)
         # a = scraper_spectra(uuid)
@@ -80,7 +85,8 @@ class Mootors(APIView):
                 data.append(str(cell.value))
 
         # go_to_sleep.delay(uuid=["16147161387"])
-
+        data = list(filter(None, data))
+        data = [d for d in data if d != "None"]
         task = webmotors.delay(data)
         print(task)
         # a = scraper_spectra(uuid)
@@ -103,7 +109,8 @@ class Autoparts(APIView):
                 data.append(str(cell.value))
 
         # go_to_sleep.delay(uuid=["16147161387"])
-
+        data = list(filter(None, data))
+        data = [d for d in data if d != "None"]
         task = autoparts.delay(data)
         print(task)
         # a = scraper_spectra(uuid)
@@ -125,6 +132,8 @@ class Carter(APIView):
                 data.append(str(cell.value))
 
         # go_to_sleep.delay(uuid=["16147161387"])
+        data = list(filter(None, data))
+        data = [d for d in data if d != "None"]
 
         task = carter.delay(data)
         print(task)
@@ -145,6 +154,8 @@ class Opticat(APIView):
         for row in worksheet.iter_rows():
             for cell in row:
                 data.append(str(cell.value))
+        data = list(filter(None, data))
+        data = [d for d in data if d != "None"]
 
         task = opticat.delay(data)
         print(task)
@@ -167,6 +178,8 @@ class Standard(APIView):
                 data.append(str(cell.value))
 
         # go_to_sleep.delay(uuid=["16147161387"])
+        data = list(filter(None, data))
+        data = [d for d in data if d != "None"]
 
         task = standard.delay(data)
         print(task)
@@ -187,6 +200,8 @@ class BWD(APIView):
         for row in worksheet.iter_rows():
             for cell in row:
                 data.append(str(cell.value))
+        data = list(filter(None, data))
+        data = [d for d in data if d != "None"]
 
         # go_to_sleep.delay(uuid=["16147161387"])
 

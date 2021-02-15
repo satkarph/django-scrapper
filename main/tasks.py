@@ -36,11 +36,11 @@ def go_to_sleep(self, duration):
     progress_recorder = ProgressRecorder(self)
     with open("ecat.xlsx", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
-        # wr.writerow(["Input Part #","Output Part#","Part Name","OE"])
+        wr.writerow(["Input Part #","Output Part#","Part Name","OE"])
         total = len(duration)
         for i,row in enumerate(duration):
-            a = scraper_spectra(row[0])
-            progress_recorder.set_progress(i+1, total, row[0])
+            a = scraper_spectra(row)
+            progress_recorder.set_progress(i+1, total, row)
             for b in a:
                 wr.writerow(b)
 
@@ -69,8 +69,8 @@ def sairtex(self, duration):
         wr.writerow(["Input Part #","Output Part#","Part Name","OE"])
         total = len(duration)
         for i,row in enumerate(duration):
-            a = airtex(row[0])
-            progress_recorder.set_progress(i+1, total, row[0])
+            a = airtex(row)
+            progress_recorder.set_progress(i+1, total, row)
             for b in a:
                 wr.writerow(b)
 
@@ -100,9 +100,9 @@ def webmotors(self, duration):
         wr.writerow(["Input Part # (Mfg. Part Number)","Output - Part Number#","Source","Part Type"])
         total = len(duration)
         for i,row in enumerate(duration):
-            a = scraper_usmotorworks(row[0])
+            a = scraper_usmotorworks(row)
             print(a)
-            progress_recorder.set_progress(i+1, total, row[0])
+            progress_recorder.set_progress(i+1, total, row)
             for b in a:
                 wr.writerow(b)
 
@@ -132,11 +132,11 @@ def autoparts(self, duration):
         wr.writerow(["Input Part # (Mfg. Part Number)","Output - Part Number#","Source","Part Type"])
         total = len(duration)
         for i,row in enumerate(duration):
-            a = scraper_densoautoparts(row[0])
+            a = scraper_densoautoparts(row)
             print(a)
-            progress_recorder.set_progress(i+1, total, row[0])
+            progress_recorder.set_progress(i+1, total, row)
             for b in a:
-                print(row[0])
+                print(row)
                 wr.writerow(b)
 
     f = open("DENSAutoparts.xlsx", "r", encoding='utf-8')
@@ -162,9 +162,9 @@ def carter(self, duration):
         wr.writerow(["Input Part # (Mfg. Part Number)","Output - Part Number#","Description","Manufacturer","Manufacturer"])
         total = len(duration)
         for i,row in enumerate(duration):
-            a = scraper_carter(row[0])
+            a = scraper_carter(row)
             print(a)
-            progress_recorder.set_progress(i+1, total, row[0])
+            progress_recorder.set_progress(i+1, total, row)
             for b in a:
                 wr.writerow(b)
 
@@ -192,9 +192,9 @@ def opticat(self, duration):
         wr.writerow(["Input Part # (Mfg. Part Number)","Output - Part Number#","Manufacturer","	OE (Item/part Description)","OE Number (Item/Part Description)"])
         total = len(duration)
         for i,row in enumerate(duration):
-            a = scraper_opticat(row[0])
+            a = scraper_opticat(row)
             print(a)
-            progress_recorder.set_progress(i+1, total, row[0])
+            progress_recorder.set_progress(i+1, total, row)
             for b in a:
                 wr.writerow(b)
 
@@ -222,9 +222,9 @@ def standard(self, duration):
         wr.writerow(["Input Part # (Mfg. Part Number)","Output - Part Number#","Part Type (Product Mfg. Name)","OE Number (Item/Part Description)"])
         total = len(duration)
         for i,row in enumerate(duration):
-            a = scraper_standard(row[0])
+            a = scraper_standard(row)
             print(a)
-            progress_recorder.set_progress(i+1, total, row[0])
+            progress_recorder.set_progress(i+1, total, row)
             for b in a:
                 wr.writerow(b)
 
@@ -251,9 +251,9 @@ def bwd(self, duration):
         wr.writerow(["Input Part # (Mfg. Part Number)","Output - Part Number#","Part Type (Product Mfg. Name)","OE Number (Item/Part Description)"])
         total = len(duration)
         for i,row in enumerate(duration):
-            a = scraper_BWD(row[0])
+            a = scraper_BWD(row)
             print(a)
-            progress_recorder.set_progress(i+1, total, row[0])
+            progress_recorder.set_progress(i+1, total, row)
             for b in a:
                 wr.writerow(b)
 
