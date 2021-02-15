@@ -38,7 +38,7 @@ class Userdetail(APIView):
         print(task)
         # a = scraper_spectra(uuid)
         content={"task_id":str(task)}
-        return Response("hello")
+        return Response(content)
 
 class Airtex(APIView):
     permission_classes = (AllowAny,)
