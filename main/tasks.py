@@ -34,7 +34,7 @@ from .models import File
 @shared_task(bind=True)
 def go_to_sleep(self, duration):
     progress_recorder = ProgressRecorder(self)
-    with open("ecat.csv", 'w') as myfile:
+    with open("ecat.xlsx", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         # wr.writerow(["Input Part #","Output Part#","Part Name","OE"])
         total = len(duration)
@@ -44,11 +44,11 @@ def go_to_sleep(self, duration):
             for b in a:
                 wr.writerow(b)
 
-    f = open("ecat.csv", "r", encoding='utf-8')
+    f = open("ecat.xlsx", "r", encoding='utf-8')
     g=f.read()
 
     a= File.objects.all().count()+1
-    filename="spectrapremium"+str(a)
+    filename="spectrapremium"+str(a)+".xlsx"
     s3 = boto3.resource('s3')
     bucketname = "scrapers1"
     folder = "spectrapremium"
@@ -64,7 +64,7 @@ def go_to_sleep(self, duration):
 @shared_task(bind=True)
 def sairtex(self, duration):
     progress_recorder = ProgressRecorder(self)
-    with open("air.csv", 'w') as myfile:
+    with open("air.xlsx", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         wr.writerow(["Input Part #","Output Part#","Part Name","OE"])
         total = len(duration)
@@ -74,11 +74,11 @@ def sairtex(self, duration):
             for b in a:
                 wr.writerow(b)
 
-    f = open("air.csv", "r", encoding='utf-8')
+    f = open("air.xlsx", "r", encoding='utf-8')
     g=f.read()
 
     a= File.objects.all().count()+1
-    filename="Airtex"+str(a)
+    filename="Airtex"+str(a)+".xlsx"
     s3 = boto3.resource('s3')
     bucketname = "scrapers1"
     folder = "Airtex"
@@ -95,7 +95,7 @@ def sairtex(self, duration):
 @shared_task(bind=True)
 def webmotors(self, duration):
     progress_recorder = ProgressRecorder(self)
-    with open("motor.csv", 'w') as myfile:
+    with open("motor.xlsx", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         wr.writerow(["Input Part # (Mfg. Part Number)","Output - Part Number#","Source","Part Type"])
         total = len(duration)
@@ -106,11 +106,11 @@ def webmotors(self, duration):
             for b in a:
                 wr.writerow(b)
 
-    f = open("motor.csv", "r", encoding='utf-8')
+    f = open("motor.xlsx", "r", encoding='utf-8')
     g =f.read()
     #
     a = File.objects.all().count()+1
-    filename="Usmotor"+str(a)
+    filename="Usmotor"+str(a)+".xlsx"
     s3 = boto3.resource('s3')
     bucketname = "scrapers1"
     folder = "Usmotor"
@@ -127,7 +127,7 @@ def webmotors(self, duration):
 @shared_task(bind=True)
 def autoparts(self, duration):
     progress_recorder = ProgressRecorder(self)
-    with open("DENSAutoparts.csv", 'w') as myfile:
+    with open("DENSAutoparts.xlsx", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         wr.writerow(["Input Part # (Mfg. Part Number)","Output - Part Number#","Source","Part Type"])
         total = len(duration)
@@ -136,13 +136,14 @@ def autoparts(self, duration):
             print(a)
             progress_recorder.set_progress(i+1, total, row[0])
             for b in a:
+                print(row[0])
                 wr.writerow(b)
 
-    f = open("DENSAutoparts.csv", "r", encoding='utf-8')
+    f = open("DENSAutoparts.xlsx", "r", encoding='utf-8')
     g =f.read()
     #
     a = File.objects.all().count()+1
-    filename="DENSAutoparts"+str(a)
+    filename="DENSAutoparts"+str(a)+".xlsx"
     s3 = boto3.resource('s3')
     bucketname = "scrapers1"
     folder = "DENSAutoparts"
@@ -156,7 +157,7 @@ def autoparts(self, duration):
 @shared_task(bind=True)
 def carter(self, duration):
     progress_recorder = ProgressRecorder(self)
-    with open("carter.csv", 'w') as myfile:
+    with open("carter.xlsx", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         wr.writerow(["Input Part # (Mfg. Part Number)","Output - Part Number#","Description","Manufacturer","Manufacturer"])
         total = len(duration)
@@ -167,11 +168,11 @@ def carter(self, duration):
             for b in a:
                 wr.writerow(b)
 
-    f = open("carter.csv", "r", encoding='utf-8')
+    f = open("carter.xlsx", "r", encoding='utf-8')
     g =f.read()
     #
     a = File.objects.all().count()+1
-    filename="carter"+str(a)
+    filename="carter"+str(a)+".xlsx"
     s3 = boto3.resource('s3')
     bucketname = "scrapers1"
     folder = "Carter"
@@ -186,7 +187,7 @@ def carter(self, duration):
 @shared_task(bind=True)
 def opticat(self, duration):
     progress_recorder = ProgressRecorder(self)
-    with open("opticat.csv", 'w') as myfile:
+    with open("opticat.xlsx", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         wr.writerow(["Input Part # (Mfg. Part Number)","Output - Part Number#","Manufacturer","	OE (Item/part Description)","OE Number (Item/Part Description)"])
         total = len(duration)
@@ -197,11 +198,11 @@ def opticat(self, duration):
             for b in a:
                 wr.writerow(b)
 
-    f = open("opticat.csv", "r", encoding='utf-8')
+    f = open("opticat.xlsx", "r", encoding='utf-8')
     g =f.read()
     #
     a = File.objects.all().count()+1
-    filename="opticat"+str(a)
+    filename="opticat"+str(a)+".xlsx"
     s3 = boto3.resource('s3')
     bucketname = "scrapers1"
     folder = "Opticat"
@@ -216,7 +217,7 @@ def opticat(self, duration):
 @shared_task(bind=True)
 def standard(self, duration):
     progress_recorder = ProgressRecorder(self)
-    with open("standard.csv", 'w') as myfile:
+    with open("standard.xlsx", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         wr.writerow(["Input Part # (Mfg. Part Number)","Output - Part Number#","Part Type (Product Mfg. Name)","OE Number (Item/Part Description)"])
         total = len(duration)
@@ -227,11 +228,11 @@ def standard(self, duration):
             for b in a:
                 wr.writerow(b)
 
-    f = open("standard.csv", "r", encoding='utf-8')
+    f = open("standard.xlsx", "r", encoding='utf-8')
     g =f.read()
     #
     a = File.objects.all().count()+1
-    filename="standard"+str(a)
+    filename="standard"+str(a)+".xlsx"
     s3 = boto3.resource('s3')
     bucketname = "scrapers1"
     folder = "Standard"
@@ -245,7 +246,7 @@ def standard(self, duration):
 @shared_task(bind=True)
 def bwd(self, duration):
     progress_recorder = ProgressRecorder(self)
-    with open("bwd.csv", 'w') as myfile:
+    with open("bwd.xlsx", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         wr.writerow(["Input Part # (Mfg. Part Number)","Output - Part Number#","Part Type (Product Mfg. Name)","OE Number (Item/Part Description)"])
         total = len(duration)
@@ -256,12 +257,12 @@ def bwd(self, duration):
             for b in a:
                 wr.writerow(b)
 
-    f = open("bwd.csv", "r", encoding='utf-8')
+    f = open("bwd.xlsx", "r", encoding='utf-8')
     g =f.read()
     #
     a = File.objects.all().count()+1
     filename="bwd"+str(a)
-    s3 = boto3.resource('s3')
+    s3 = boto3.resource('s3')+".xlsx"
     bucketname = "scrapers1"
     folder = "BWD"
     s3.Bucket(bucketname).put_object(ContentType= "'text/csv'", ACL='public-read',
