@@ -6,7 +6,7 @@ def store_s3(filecsv,folder,filename):
     df = pd.read_csv(filecsv)
     with io.BytesIO() as output:
         with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
-            df.to_excel(writer)
+            df.to_excel(writer,index=False)
         data = output.getvalue()
 
     bucketname = "scrapers1"
