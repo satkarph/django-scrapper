@@ -217,4 +217,4 @@ class Alllist(APIView):
     def get(self, request):
         file = File.objects.all()
         data = FileSer(file,many=True)
-        return Response(data)
+        return Response(data.data)
