@@ -215,6 +215,6 @@ class BWD(APIView):
 class Alllist(APIView):
     permission_classes = (AllowAny,)
     def get(self, request):
-        file = File.objects.all()
+        file = File.objects.all().order_by('-created_date')
         data = FileSer(file,many=True)
         return Response(data.data)
