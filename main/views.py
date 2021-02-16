@@ -8,7 +8,8 @@ import io
 import csv
 import pandas as pd
 import openpyxl
-
+from .models import File
+from .serializer import FileSer
 # Create your views here.
 class Userdetail(APIView):
     permission_classes = (AllowAny,)
@@ -210,3 +211,10 @@ class BWD(APIView):
         # a = scraper_spectra(uuid)
         content={"task_id":str(task)}
         return Response(content)
+
+class Alllist(APIView):
+    permission_classes = (AllowAny,)
+    def get(self, request):
+        file = File.objects.all()
+        data = FileSer(file,many=True)
+        return Response(data)
