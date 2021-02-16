@@ -52,7 +52,7 @@ def go_to_sleep(self, duration):
 
     a= File.objects.all().count()+1
     filename="spectrapremium"+str(a)+".xlsx"
-    folder = "spectrapremium"
+    folder = "ecaTspectrapremiumCom"
     url = store_s3(filecsv="ecat.csv", folder=folder, filename=filename)
 
     return url
@@ -61,7 +61,7 @@ def go_to_sleep(self, duration):
 @shared_task(bind=True)
 def sairtex(self, duration):
     progress_recorder = ProgressRecorder(self)
-    with open("air.xlsx", 'w') as myfile:
+    with open("air.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         wr.writerow(["Input Part #","Output Part#","Part Name","OE"])
         total = len(duration)
@@ -70,20 +70,16 @@ def sairtex(self, duration):
             progress_recorder.set_progress(i+1, total, row)
             for b in a:
                 wr.writerow(b)
-
-    f = open("air.xlsx", "r", encoding='utf-8')
-    g=f.read()
+    #
+    # f = open("air.xlsx", "r", encoding='utf-8')
+    # g=f.read()
 
     a= File.objects.all().count()+1
     filename="Airtex"+str(a)+".xlsx"
-    s3 = boto3.resource('s3')
-    bucketname = "scrapers1"
     folder = "Airtex"
-    s3.Bucket(bucketname).put_object(ContentType= "'text/csv'", ACL='public-read',
-                                     Key='{0}/{1}'.format(folder, filename), Body=g)
-    url = "https://{0}.s3.amazonaws.com/{1}/{2}".format(bucketname, folder, filename)
-    print(url)
-    File.objects.create(name="Airtex",url=url)
+    url = store_s3(filecsv="air.csv", folder=folder, filename=filename)
+
+
     return url
 
 
@@ -92,7 +88,7 @@ def sairtex(self, duration):
 @shared_task(bind=True)
 def webmotors(self, duration):
     progress_recorder = ProgressRecorder(self)
-    with open("motor.xlsx", 'w') as myfile:
+    with open("motor.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         wr.writerow(["Input Part # (Mfg. Part Number)","Output - Part Number#","Source","Part Type"])
         total = len(duration)
@@ -103,19 +99,14 @@ def webmotors(self, duration):
             for b in a:
                 wr.writerow(b)
 
-    f = open("motor.xlsx", "r", encoding='utf-8')
-    g =f.read()
+    # f = open("motor.xlsx", "r", encoding='utf-8')
+    # g =f.read()
     #
     a = File.objects.all().count()+1
     filename="Usmotor"+str(a)+".xlsx"
-    s3 = boto3.resource('s3')
-    bucketname = "scrapers1"
+
     folder = "Usmotor"
-    s3.Bucket(bucketname).put_object(ContentType= "'text/csv'", ACL='public-read',
-                                     Key='{0}/{1}'.format(folder, filename), Body=g)
-    url = "https://{0}.s3.amazonaws.com/{1}/{2}".format(bucketname, folder, filename)
-    print(url)
-    File.objects.create(name="Usmotor",url=url)
+    url = store_s3(filecsv="motor.csv", folder=folder, filename=filename)
     return url
 
 
@@ -124,7 +115,7 @@ def webmotors(self, duration):
 @shared_task(bind=True)
 def autoparts(self, duration):
     progress_recorder = ProgressRecorder(self)
-    with open("DENSAutoparts.xlsx", 'w') as myfile:
+    with open("DENSAutoparts.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         wr.writerow(["Input Part # (Mfg. Part Number)","Output - Part Number#","Source","Part Type"])
         total = len(duration)
@@ -135,26 +126,16 @@ def autoparts(self, duration):
             for b in a:
                 print(row)
                 wr.writerow(b)
-
-    f = open("DENSAutoparts.xlsx", "r", encoding='utf-8')
-    g =f.read()
-    #
     a = File.objects.all().count()+1
     filename="DENSAutoparts"+str(a)+".xlsx"
-    s3 = boto3.resource('s3')
-    bucketname = "scrapers1"
-    folder = "DENSAutoparts"
-    s3.Bucket(bucketname).put_object(ContentType= "'text/csv'", ACL='public-read',
-                                     Key='{0}/{1}'.format(folder, filename), Body=g)
-    url = "https://{0}.s3.amazonaws.com/{1}/{2}".format(bucketname, folder, filename)
-    print(url)
-    File.objects.create(name="DENSAutoparts",url=url)
+    folder = "densoautoparts"
+    url = store_s3(filecsv="DENSAutoparts.csv", folder=folder, filename=filename)
     return url
 
 @shared_task(bind=True)
 def carter(self, duration):
     progress_recorder = ProgressRecorder(self)
-    with open("carter.xlsx", 'w') as myfile:
+    with open("carter.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         wr.writerow(["Input Part # (Mfg. Part Number)","Output - Part Number#","Description","Manufacturer","Manufacturer"])
         total = len(duration)
@@ -164,27 +145,17 @@ def carter(self, duration):
             progress_recorder.set_progress(i+1, total, row)
             for b in a:
                 wr.writerow(b)
-
-    f = open("carter.xlsx", "r", encoding='utf-8')
-    g =f.read()
-    #
     a = File.objects.all().count()+1
     filename="carter"+str(a)+".xlsx"
-    s3 = boto3.resource('s3')
-    bucketname = "scrapers1"
     folder = "Carter"
-    s3.Bucket(bucketname).put_object(ContentType= "'text/csv'", ACL='public-read',
-                                     Key='{0}/{1}'.format(folder, filename), Body=g)
-    url = "https://{0}.s3.amazonaws.com/{1}/{2}".format(bucketname, folder, filename)
-    print(url)
-    File.objects.create(name="Carter",url=url)
+    url = store_s3(filecsv="carter.csv", folder=folder, filename=filename)
     return url
 
 
 @shared_task(bind=True)
 def opticat(self, duration):
     progress_recorder = ProgressRecorder(self)
-    with open("opticat.xlsx", 'w') as myfile:
+    with open("opticat.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         wr.writerow(["Input Part # (Mfg. Part Number)","Output - Part Number#","Manufacturer","	OE (Item/part Description)","OE Number (Item/Part Description)"])
         total = len(duration)
@@ -195,26 +166,18 @@ def opticat(self, duration):
             for b in a:
                 wr.writerow(b)
 
-    f = open("opticat.xlsx", "r", encoding='utf-8')
-    g =f.read()
     #
     a = File.objects.all().count()+1
     filename="opticat"+str(a)+".xlsx"
-    s3 = boto3.resource('s3')
-    bucketname = "scrapers1"
     folder = "Opticat"
-    s3.Bucket(bucketname).put_object(ContentType= "'text/csv'", ACL='public-read',
-                                     Key='{0}/{1}'.format(folder, filename), Body=g)
-    url = "https://{0}.s3.amazonaws.com/{1}/{2}".format(bucketname, folder, filename)
-    print(url)
-    File.objects.create(name="Opticat",url=url)
+    url = store_s3(filecsv="opticat.csv", folder=folder, filename=filename)
     return url
 
 
 @shared_task(bind=True)
 def standard(self, duration):
     progress_recorder = ProgressRecorder(self)
-    with open("standard.xlsx", 'w') as myfile:
+    with open("standard.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         wr.writerow(["Input Part # (Mfg. Part Number)","Output - Part Number#","Part Type (Product Mfg. Name)","OE Number (Item/Part Description)"])
         total = len(duration)
@@ -224,26 +187,15 @@ def standard(self, duration):
             progress_recorder.set_progress(i+1, total, row)
             for b in a:
                 wr.writerow(b)
-
-    f = open("standard.xlsx", "r", encoding='utf-8')
-    g =f.read()
-    #
-    a = File.objects.all().count()+1
     filename="standard"+str(a)+".xlsx"
-    s3 = boto3.resource('s3')
-    bucketname = "scrapers1"
     folder = "Standard"
-    s3.Bucket(bucketname).put_object(ContentType= "'text/csv'", ACL='public-read',
-                                     Key='{0}/{1}'.format(folder, filename), Body=g)
-    url = "https://{0}.s3.amazonaws.com/{1}/{2}".format(bucketname, folder, filename)
-    print(url)
-    File.objects.create(name="Standard",url=url)
+    url = store_s3(filecsv="standard.csv", folder=folder, filename=filename)
     return url
 
 @shared_task(bind=True)
 def bwd(self, duration):
     progress_recorder = ProgressRecorder(self)
-    with open("bwd.xlsx", 'w') as myfile:
+    with open("bwd.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         wr.writerow(["Input Part # (Mfg. Part Number)","Output - Part Number#","Part Type (Product Mfg. Name)","OE Number (Item/Part Description)"])
         total = len(duration)
@@ -253,20 +205,10 @@ def bwd(self, duration):
             progress_recorder.set_progress(i+1, total, row)
             for b in a:
                 wr.writerow(b)
-
-    f = open("bwd.xlsx", "r", encoding='utf-8')
-    g =f.read()
-    #
     a = File.objects.all().count()+1
-    filename="bwd"+str(a)
-    s3 = boto3.resource('s3')+".xlsx"
-    bucketname = "scrapers1"
+    filename="bwd"+str(a)+".xlsx"
     folder = "BWD"
-    s3.Bucket(bucketname).put_object(ContentType= "'text/csv'", ACL='public-read',
-                                     Key='{0}/{1}'.format(folder, filename), Body=g)
-    url = "https://{0}.s3.amazonaws.com/{1}/{2}".format(bucketname, folder, filename)
-    print(url)
-    File.objects.create(name="BWD",url=url)
+    url = store_s3(filecsv="bwd.csv", folder=folder, filename=filename)
     return url
 
 
