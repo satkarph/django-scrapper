@@ -1,6 +1,7 @@
 from celery import shared_task
 from celery_progress.backend import ProgressRecorder
-from .utils import scraper_spectra,airtex,scraper_usmotorworks,scraper_densoautoparts,scraper_carter,scraper_opticat,scraper_standard,scraper_BWD
+from .utils import scraper_spectra,airtex,scraper_usmotorworks,scraper_densoautoparts,scraper_carter,scraper_opticat,scraper_standard,scraper_BWD ,\
+    scraper_WVE
 import csv
 import boto3
 import pandas as pd
@@ -210,5 +211,25 @@ def bwd(self, duration):
     folder = "BWD"
     url = store_s3(filecsv="bwd.csv", folder=folder, filename=filename)
     return url
+
+@shared_task(bind=True)
+def wve(self, duration):
+    progress_recorder = ProgressRecorder(self)
+    with open("wve.csv", 'w') as myfile:
+        wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+        wr.writerow(["Input Part # (Mfg. Part Number)","Output - Part Number#","Part Type (Product Mfg. Name)","OE Number (Item/Part Description)"])
+        total = len(duration)
+        for i,row in enumerate(duration):
+            a = scraper_WVE(row)
+            print(a)
+            progress_recorder.set_progress(i+1, total, row)
+            for b in a:
+                wr.writerow(b)
+    a = File.objects.all().count()+1
+    filename="wve"+str(a)+".xlsx"
+    folder = "WVE"
+    url = store_s3(filecsv="wve.csv", folder=folder, filename=filename)
+    return url
+
 
 

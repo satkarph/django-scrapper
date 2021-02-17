@@ -444,41 +444,98 @@ def scraper_BWD(part_id):
     part_found = 1
     found_values = []
     timeout = 15
+    if len(part_id)>3:
+        try:
+            element_present = EC.presence_of_element_located(
+                (By.XPATH, '//*[@id="dynEcat"]/div/div[2]/div[2]/div[2]/div/input'))
+            WebDriverWait(driver, timeout).until(element_present)
+        except TimeoutException:
+            print("Timed out waiting for page to load")
+        input_element = driver.find_element_by_xpath('//*[@id="dynEcat"]/div/div[2]/div[2]/div[2]/div/input')
+        driver.save_screenshot("opticat.png")
+
+        input_element.send_keys(part_id)
+        driver.save_screenshot("opticat1.png")
+
+        input_element.send_keys(Keys.ENTER)
+        driver.save_screenshot("opticat.png")
+        time.sleep(10)
+        driver.switch_to.frame(driver.find_element_by_id("eCatFrame"))
+
+        try:
+            element_present = EC.presence_of_element_located((By.XPATH,'//*[@id="eCat"]/div/section/div/div[1]/div/div[4]/div[2]/div[1]/div[1]/div[2]/a/p'))
+            WebDriverWait(driver, timeout).until(element_present)
+        except TimeoutException:
+            part_found = 0
+            print("Timed out waiting for page to load")
+        if (part_found == 1):
+            time.sleep(2)
+            #print(part_id)
+            table_elements = driver.find_elements_by_xpath('//*[@id="eCat"]/div/section/div/div[1]/div/div[4]/div[2]/div[1]/div')
+            for i in range(len(table_elements)):
+                found_values.append([])
+                found_values[i].append(part_id)
+                mfg_part = driver.find_element_by_xpath('//*[@id="eCat"]/div/section/div/div[1]/div/div[4]/div[2]/div[1]/div['+str(i+1)+']/div[2]/a/p')
+                #print(mfg_part.text)
+                found_values[i].append(mfg_part.text)
+                product_type = driver.find_element_by_xpath('//*[@id="eCat"]/div/section/div/div[1]/div/div[4]/div[2]/div[1]/div['+str(i+1)+']/div[2]/div[1]/p')
+                #print(product_type.text)
+                found_values[i].append(product_type.text)
+                manufacturer = driver.find_element_by_xpath('//*[@id="eCat"]/div/section/div/div[1]/div/div[4]/div[2]/div[1]/div['+str(i+1)+']/div[2]/div[5]/ul/li[1]/span[2]')
+                #print(manufacturer.text)
+                found_values[i].append(manufacturer.text)
+                product_number = driver.find_element_by_xpath('//*[@id="eCat"]/div/section/div/div[1]/div/div[4]/div[2]/div[1]/div['+str(i+1)+']/div[2]/div[5]/ul/li[2]/span[2]')
+                #print(product_number.text)
+                found_values[i].append(product_number.text)
+        else:
+            found_values.append([])
+            found_values[0].append(part_id)
+            found_values[0].append('Nothing found.')
+
+    driver.quit()
+    return found_values
+
+
+def scraper_WVE(part_id):
+    driver = webdriver.Chrome('chromedriver', options=chrome_options)
+    driver.get('https://wvebrand.com/parts/')
+    item_found = 1
+    found_values = []
+    timeout = 10
     try:
         element_present = EC.presence_of_element_located(
-            (By.XPATH, '//*[@id="dynEcat"]/div/div[2]/div[2]/div[2]/div/input'))
+            (By.XPATH, '//*[@id="XPART_NO"]'))
         WebDriverWait(driver, timeout).until(element_present)
     except TimeoutException:
         print("Timed out waiting for page to load")
-    input_element = driver.find_element_by_xpath('//*[@id="dynEcat"]/div/div[2]/div[2]/div[2]/div/input')
+
+    input_element = driver.find_element_by_xpath('//*[@id="XPART_NO"]')
     input_element.send_keys(part_id)
     input_element.send_keys(Keys.ENTER)
-    driver.switch_to.frame(driver.find_element_by_id("eCatFrame"))
+
     try:
-        element_present = EC.presence_of_element_located((By.XPATH,'//*[@id="eCat"]/div/section/div/div[1]/div/div[4]/div[2]/div[1]/div[1]/div[2]/a/p'))
+        element_present = EC.presence_of_element_located((By.XPATH, '//*[@id="products-0"]/div/table/tbody/tr/th[1]'))
         WebDriverWait(driver, timeout).until(element_present)
     except TimeoutException:
-        part_found = 0
+        item_found = 0
         print("Timed out waiting for page to load")
-    if (part_found == 1):
-        time.sleep(2)
-        #print(part_id)
-        table_elements = driver.find_elements_by_xpath('//*[@id="eCat"]/div/section/div/div[1]/div/div[4]/div[2]/div[1]/div')
-        for i in range(len(table_elements)):
-            found_values.append([])
-            found_values[i].append(part_id)
-            mfg_part = driver.find_element_by_xpath('//*[@id="eCat"]/div/section/div/div[1]/div/div[4]/div[2]/div[1]/div['+str(i+1)+']/div[2]/a/p')
-            #print(mfg_part.text)
-            found_values[i].append(mfg_part.text)
-            product_type = driver.find_element_by_xpath('//*[@id="eCat"]/div/section/div/div[1]/div/div[4]/div[2]/div[1]/div['+str(i+1)+']/div[2]/div[1]/p')
-            #print(product_type.text)
-            found_values[i].append(product_type.text)
-            manufacturer = driver.find_element_by_xpath('//*[@id="eCat"]/div/section/div/div[1]/div/div[4]/div[2]/div[1]/div['+str(i+1)+']/div[2]/div[5]/ul/li[1]/span[2]')
-            #print(manufacturer.text)
-            found_values[i].append(manufacturer.text)
-            product_number = driver.find_element_by_xpath('//*[@id="eCat"]/div/section/div/div[1]/div/div[4]/div[2]/div[1]/div['+str(i+1)+']/div[2]/div[5]/ul/li[2]/span[2]')
-            #print(product_number.text)
-            found_values[i].append(product_number.text)
+
+    if (item_found == 1):
+        found_values.append([])
+        # print(part_id)
+        found_values[0].append(part_id)
+        brand = driver.find_element_by_xpath('//*[@id="products-0"]/div/table/tbody/tr/th[1]')
+        # print(brand.text)
+        found_values[0].append(brand.text)
+        number = driver.find_element_by_xpath('//*[@id="products-0"]/div/table/tbody/tr/th[2]')
+        # print(number.text)
+        found_values[0].append(number.text)
+        wve = driver.find_element_by_xpath('//*[@id="products-0"]/div/table/tbody/tr/td[1]/a')
+        # print(wve.text)
+        found_values[0].append(wve.text)
+        description = driver.find_element_by_xpath('//*[@id="products-0"]/div/table/tbody/tr/td[2]')
+        # print(description.text)
+        found_values[0].append(description.text)
     else:
         found_values.append([])
         found_values[0].append(part_id)

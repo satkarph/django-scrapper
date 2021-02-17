@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,re_path,include
-from main.views import Userdetail,Airtex,Mootors,Autoparts,Carter,Opticat,Standard,BWD,Alllist
+from main.views import Userdetail,Airtex,Mootors,Autoparts,Carter,Opticat,Standard,BWD,Alllist,WVVE
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,6 +29,7 @@ urlpatterns = [
     path('standard/', Standard.as_view()),
     path('bwd/', BWD.as_view()),
     path('listall/', Alllist.as_view()),
+    path('wvebrand/', BWD.as_view()),
 
     path('celery-progress/', include('celery_progress.urls')),
 ]
