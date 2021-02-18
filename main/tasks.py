@@ -188,6 +188,7 @@ def standard(self, duration):
             progress_recorder.set_progress(i+1, total, row)
             for b in a:
                 wr.writerow(b)
+    a = File.objects.all().count()+1
     filename="standard"+str(a)+".xlsx"
     folder = "Standard"
     url = store_s3(filecsv="standard.csv", folder=folder, filename=filename)
