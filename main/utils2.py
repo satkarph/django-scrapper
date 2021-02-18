@@ -3,7 +3,7 @@ import pandas as pd
 import boto3
 from .models import File
 def store_s3(filecsv,folder,filename):
-    df = pd.read_csv(filecsv, sep=',',header=None)
+    df = pd.read_csv(filecsv,error_bad_lines=False)
     with io.BytesIO() as output:
         with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
             df.to_excel(writer,index=False)
