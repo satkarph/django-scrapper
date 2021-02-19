@@ -64,7 +64,7 @@ def sairtex(self, duration):
     progress_recorder = ProgressRecorder(self)
     with open("air.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
-        wr.writerow(["Input Part #","Output Part#","Part Name","OE"])
+        wr.writerow(["Input Part #","Output Part#","OE","Part Name"])
         total = len(duration)
         for i,row in enumerate(duration):
             a = airtex(row)
@@ -118,7 +118,7 @@ def autoparts(self, duration):
     progress_recorder = ProgressRecorder(self)
     with open("DENSAutoparts.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
-        wr.writerow(["Input Part # (Mfg. Part Number)","Output - Part Number#","Source","Part Type"])
+        wr.writerow(["Input Part # (Mfg. Part Number)","Manufacturer","Part Type","DENSO Part Number"])
         total = len(duration)
         for i,row in enumerate(duration):
             a = scraper_densoautoparts(row)
