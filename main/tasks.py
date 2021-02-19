@@ -184,6 +184,7 @@ def standard(self, duration):
         total = len(duration)
         for i,row in enumerate(duration):
             a = scraper_standard(row)
+            a.pop(1)
             print(a)
             progress_recorder.set_progress(i+1, total, row)
             for b in a:
@@ -206,6 +207,7 @@ def bwd(self, duration):
             print(a)
             progress_recorder.set_progress(i+1, total, row)
             for b in a:
+                b.pop(3)
                 wr.writerow(b)
     a = File.objects.all().count()+1
     filename="bwd"+str(a)+".xlsx"
@@ -218,13 +220,17 @@ def wve(self, duration):
     progress_recorder = ProgressRecorder(self)
     with open("wve.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
-        wr.writerow(["Input Part # (Mfg. Part Number)","Output - Part Number#","Part Type (Product Mfg. Name)","OE Number (Item/Part Description)"])
+        # wr.writerow(["Input Part #","OE (Competitor Brand)","Competitor Part No.","Output – (WVE Part No.)","Part Type (Description)"])
+        wr.writerow(["Input Part # (Mfg. Part Number)","OE (Comp/OE)","Output – Part#","Part Type"])
+
         total = len(duration)
         for i,row in enumerate(duration):
             a = scraper_WVE(row)
             print(a)
             progress_recorder.set_progress(i+1, total, row)
             for b in a:
+                b.pop(2)
+                print(b)
                 wr.writerow(b)
     a = File.objects.all().count()+1
     filename="wve"+str(a)+".xlsx"

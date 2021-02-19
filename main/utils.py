@@ -497,7 +497,7 @@ def scraper_BWD(part_id):
 
 
 def scraper_WVE(part_id):
-    driver = webdriver.Chrome('chromedriver', options=chrome_options)
+    driver = webdriver.Firefox(firefox_options=chrome_options)
     driver.get('https://wvebrand.com/parts/')
     item_found = 1
     found_values = []
