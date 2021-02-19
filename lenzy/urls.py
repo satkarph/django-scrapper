@@ -29,7 +29,7 @@ urlpatterns = [
     path('standard/', Standard.as_view()),
     path('bwd/', BWD.as_view()),
     path('listall/', Alllist.as_view()),
-    path('wvebrand/', BWD.as_view()),
+    path('wvebrand/', WVVE.as_view()),
 
     path('celery-progress/', include('celery_progress.urls')),
 ]
