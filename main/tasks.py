@@ -184,7 +184,10 @@ def standard(self, duration):
         total = len(duration)
         for i,row in enumerate(duration):
             a = scraper_standard(row)
-            a.pop(1)
+            try:
+                a.pop(1)
+            except:
+                pass
             print(a)
             progress_recorder.set_progress(i+1, total, row)
             for b in a:
@@ -207,7 +210,10 @@ def bwd(self, duration):
             print(a)
             progress_recorder.set_progress(i+1, total, row)
             for b in a:
-                b.pop(3)
+                try:
+                    b.pop(3)
+                except:
+                    pass
                 wr.writerow(b)
     a = File.objects.all().count()+1
     filename="bwd"+str(a)+".xlsx"
@@ -229,7 +235,10 @@ def wve(self, duration):
             print(a)
             progress_recorder.set_progress(i+1, total, row)
             for b in a:
-                b.pop(2)
+                try:
+                    b.pop(2)
+                except:
+                    pass
                 print(b)
                 wr.writerow(b)
     a = File.objects.all().count()+1
