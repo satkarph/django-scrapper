@@ -715,18 +715,18 @@ def scraper_advanceautoparts(part_id):
 
 def webscraper_nepalonline(part_id):
     driver = webdriver.Firefox(firefox_options=chrome_options)
-    driver.get('https://www.napaonline.com/en/search?text={0}&isInterchange=true&referer=interchange'.format(part_id))
     part_found = 1
     found_values = []
     timeout = 10
     # try:
+    driver.get('https://www.napaonline.com/en/search?text={0}&isInterchange=true&referer=interchange'.format(part_id))
+    time.sleep(3)
     parts = driver.find_elements_by_class_name('listing-detail-text-part')
     oe = driver.find_elements_by_class_name('listing-detail-text-product')
     name = driver.find_elements_by_class_name('ada-plp-h2-to-a-adjustment')
     pclass = "listing-price-value"
     prices = driver.find_elements_by_class_name(pclass)
-
-    for pa ,na ,o,pr in (parts,name,oe,prices):
+    for pa ,na ,o,pr in zip(parts,name,oe,prices):
         data=[]
         data.append(part_id)
         data.append(pa.text)
