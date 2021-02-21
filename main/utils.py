@@ -719,26 +719,26 @@ def webscraper_nepalonline(part_id):
     part_found = 1
     found_values = []
     timeout = 10
-    try:
-        parts = driver.find_elements_by_class_name('listing-detail-text-part')
-        oe = driver.find_elements_by_class_name('listing-detail-text-product')
-        name = driver.find_elements_by_class_name('ada-plp-h2-to-a-adjustment')
-        pclass = "listing-price-value"
-        prices = driver.find_elements_by_class_name(pclass)
+    # try:
+    parts = driver.find_elements_by_class_name('listing-detail-text-part')
+    oe = driver.find_elements_by_class_name('listing-detail-text-product')
+    name = driver.find_elements_by_class_name('ada-plp-h2-to-a-adjustment')
+    pclass = "listing-price-value"
+    prices = driver.find_elements_by_class_name(pclass)
 
-        for pa ,na ,o,pr in (parts,name,oe,prices):
-            data=[]
-            data.append(part_id)
-            data.append(pa.text)
-            data.append(na.text)
-            data.append(o.text)
-            data.append(pr.text)
-            found_values.append(data)
+    for pa ,na ,o,pr in (parts,name,oe,prices):
+        data=[]
+        data.append(part_id)
+        data.append(pa.text)
+        data.append(na.text)
+        data.append(o.text)
+        data.append(pr.text)
+        found_values.append(data)
 
-    except:
-        found_values.append([])
-        found_values[0].append(part_id)
-        found_values[0].append('Nothing found.')
+    # except:
+    #     found_values.append([])
+    #     found_values[0].append(part_id)
+    #     found_values[0].append('Nothing found.')
     driver.quit()
     return found_values
 
