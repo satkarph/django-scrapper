@@ -543,3 +543,203 @@ def scraper_WVE(part_id):
 
     driver.quit()
     return found_values
+
+
+
+
+def scraper_oreillyautoparts(part_id):
+    driver = webdriver.Firefox(firefox_options=chrome_options)
+    driver.get('https://www.oreillyauto.com/')
+    part_found = 1
+    found_values = []
+    timeout = 10
+    try:
+        element_present = EC.presence_of_element_located(
+            (By.XPATH, '/html/body/div[3]/header/div[3]/div[2]/div[2]/div[1]/div[2]/div/form/input'))
+        WebDriverWait(driver, timeout).until(element_present)
+    except TimeoutException:
+        print("Timed out waiting for page to load")
+    time.sleep(2)
+    input_element = driver.find_element_by_xpath('/html/body/div[3]/header/div[3]/div[2]/div[2]/div[1]/div[2]/div/form/input')
+    input_element.send_keys(part_id)
+    input_element.send_keys(Keys.ENTER)
+
+    try:
+        element_present = EC.presence_of_element_located((By.XPATH, '/html/body/div[3]/div/div[2]/div[2]/div/div/div[2]/div/div/article/div[2]/div[1]/h2/a'))
+        WebDriverWait(driver, timeout).until(element_present)
+    except TimeoutException:
+        part_found = 0
+        print("Timed out waiting for page to load")
+
+
+    if (part_found == 1):
+        interchange= driver.find_element_by_xpath('/html/body/div[3]/div/div[2]/div[2]/div/div/div[1]/div[2]/a')
+        interchange.click()
+        time.sleep(7)
+
+        name = driver.find_elements_by_class_name('js-product-name')
+        linecode = driver.find_elements_by_class_name('line-code')
+        item_number = driver.find_elements_by_class_name('item-number')
+        replaced = driver.find_elements_by_class_name('manufacturer-replacement')
+
+        for it , na, line ,rep in zip(item_number,name,linecode,replaced):
+            data= []
+            data.append(part_id)
+            data.append(it.text)
+            data.append(na.text)
+            data.append(line.text)
+            print(it.text)
+            print(na.text)
+            print(line.text)
+            atag = rep.find_elements_by_tag_name('a')
+            repp=""
+            for a in atag:
+                atext = a.text
+                repp = atext+repp
+
+            data.append(repp)
+            found_values.append(data)
+
+
+        # found_values.append([])
+        # #print(part_id)
+        # found_values[0].append(part_id)
+        # description = driver.find_element_by_xpath('/html/body/div[3]/div/div[2]/div[2]/div/div/div[2]/div/div/article/div[2]/div[1]/h2/a')
+        # #print(description.text)
+        # found_values[0].append(description.text)
+    else:
+        found_values.append([])
+        found_values[0].append(part_id)
+        found_values[0].append('Nothing found.')
+
+
+
+    driver.quit()
+    return found_values
+
+
+
+def scraper_autozone(part_id):
+    driver = webdriver.Firefox(firefox_options=chrome_options)
+    driver.get('https://www.autozone.com/searchresult?searchText={0}'.format(part_id))
+    driver.delete_all_cookies()
+
+    part_found = 1
+    found_values = []
+    timeout = 10
+    try:
+        image = driver.find_element_by_xpath('//*[@id="search-result-list"]/article[1]/a')
+        a = image.get_attribute('href')
+        print("dddddd")
+        print(a)
+        driver.get(a)
+        time.sleep(2)
+        names = driver.find_elements_by_xpath('//*[@id="productTitle"]')
+        price = driver.find_elements_by_xpath('//*[@id="priceContainer"]/div[1]/div[2]')
+        print(price)
+        p = ([p.text for p in price])
+        print(p)
+        price = list(filter(None, p))
+        print(price)
+
+        for na , price in zip(names,price):
+            data= []
+            name = na.text
+            part = name.split(' ')[-1]
+            data.append(part_id)
+            data.append(part)
+            data.append(name)
+            data.append("$"+price)
+            found_values.append(data)
+    except:
+        found_values.append([])
+        found_values[0].append(part_id)
+        found_values[0].append('Nothing found.')
+    driver.quit()
+    return found_values
+
+
+
+
+
+
+
+
+
+
+def scraper_advanceautoparts(part_id):
+    driver = webdriver.Firefox(firefox_options=chrome_options)
+    driver.get('https://shop.advanceautoparts.com/')
+    driver.delete_all_cookies()
+
+    part_found = 1
+    found_values = []
+    timeout = 10
+    try:
+        input_element = driver.find_element_by_xpath('//*[@id="aap-primary-search-input"]')
+        input_element.send_keys(part_id)
+        input_element.send_keys(Keys.ENTER)
+        time.sleep(3)
+        prices = driver.find_elements_by_class_name('red-price')
+        href_links=driver.find_elements_by_class_name('pdp-link')
+        parts= []
+        for sd in href_links:
+            url =sd.get_attribute('href')
+            part = url.split("/")[-2]
+            part = part.split('-')[-1]
+            parts.append(part)
+
+        bigname = driver.find_elements_by_class_name('aap-pl-item__pname--h1')
+        smallname = driver.find_elements_by_class_name('aap-pl-item__pname--h2')
+
+
+        for b, s, pa, pc in zip(bigname, smallname, parts, prices):
+            data = []
+            name = b.text + " " + s.text
+            part = pa
+            price = pc.text
+            data.append(part_id)
+            data.append(part)
+            data.append(name)
+            data.append(price)
+            found_values.append(data)
+
+    except:
+        found_values.append([])
+        found_values[0].append(part_id)
+        found_values[0].append('Nothing found.')
+    driver.quit()
+    return found_values
+
+
+
+def webscraper_nepalonline(part_id):
+    driver = webdriver.Firefox(firefox_options=chrome_options)
+    driver.get('https://www.napaonline.com/en/search?text={0}&isInterchange=true&referer=interchange'.format(part_id))
+    part_found = 1
+    found_values = []
+    timeout = 10
+    try:
+        parts = driver.find_elements_by_class_name('listing-detail-text-part')
+        oe = driver.find_elements_by_class_name('listing-detail-text-product')
+        name = driver.find_elements_by_class_name('ada-plp-h2-to-a-adjustment')
+        pclass = "listing-price-value"
+        prices = driver.find_elements_by_class_name(pclass)
+
+        for pa ,na ,o,pr in (parts,name,oe,prices):
+            data=[]
+            data.append(part_id)
+            data.append(pa.text)
+            data.append(na.text)
+            data.append(o.text)
+            data.append(pr.text)
+            found_values.append(data)
+
+    except:
+        found_values.append([])
+        found_values[0].append(part_id)
+        found_values[0].append('Nothing found.')
+    driver.quit()
+    return found_values
+
+

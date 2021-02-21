@@ -15,12 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,re_path,include
-from main.views import Userdetail,Airtex,Mootors,Autoparts,Carter,Opticat,Standard,BWD,Alllist,WVVE
+from main.views import Userdetail,Airtex,Mootors,Autoparts,Carter,Opticat,Standard,BWD,Alllist,WVVE,Oreo,Autozone,Advance,Nepa
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('airtex/', Airtex.as_view()),
-
     path('check/',Userdetail.as_view()),
     path('usmotors/',Mootors.as_view()),
     path('autoparts/', Autoparts.as_view()),
@@ -30,6 +29,9 @@ urlpatterns = [
     path('bwd/', BWD.as_view()),
     path('listall/', Alllist.as_view()),
     path('wvebrand/', WVVE.as_view()),
-
+    path('oreo/', Oreo.as_view()),
+    path('autozone/', Autozone.as_view()),
+    path('advance/', Advance.as_view()),
+    path('nepaonline/', Nepa.as_view()),
     path('celery-progress/', include('celery_progress.urls')),
 ]

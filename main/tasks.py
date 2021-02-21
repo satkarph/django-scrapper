@@ -1,7 +1,7 @@
 from celery import shared_task
 from celery_progress.backend import ProgressRecorder
 from .utils import scraper_spectra,airtex,scraper_usmotorworks,scraper_densoautoparts,scraper_carter,scraper_opticat,scraper_standard,scraper_BWD ,\
-    scraper_WVE
+    scraper_WVE,scraper_oreillyautoparts,scraper_autozone,scraper_advanceautoparts,webscraper_nepalonline
 import csv
 import boto3
 import pandas as pd
@@ -246,6 +246,99 @@ def wve(self, duration):
     folder = "WVE"
     url = store_s3(filecsv="wve.csv", folder=folder, filename=filename)
     return url
+
+
+
+@shared_task(bind=True)
+def oreo(self, duration):
+    progress_recorder = ProgressRecorder(self)
+    with open("oreo.csv", 'w') as myfile:
+        wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+        # wr.writerow(["Input Part #","OE (Competitor Brand)","Competitor Part No.","Output – (WVE Part No.)","Part Type (Description)"])
+        wr.writerow(["Input Part ","Output – Part#","Mfg and Part Type","Line","Replace"])
+
+        total = len(duration)
+        for i,row in enumerate(duration):
+            a = scraper_oreillyautoparts(row)
+            print(a)
+            progress_recorder.set_progress(i+1, total, row)
+            for b in a:
+                wr.writerow(b)
+    a = File.objects.all().count()+1
+    filename="oreillyautoparts"+str(a)+".xlsx"
+    folder = "Oreillyautoparts"
+    url = store_s3(filecsv="oreo.csv", folder=folder, filename=filename)
+    return url
+
+@shared_task(bind=True)
+def autozone(self, duration):
+    progress_recorder = ProgressRecorder(self)
+    with open("autozone.csv", 'w') as myfile:
+        wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+        # wr.writerow(["Input Part #","OE (Competitor Brand)","Competitor Part No.","Output – (WVE Part No.)","Part Type (Description)"])
+        wr.writerow(["Input Part ","Output – Part#","Mfg and Part Type","Price"])
+
+        total = len(duration)
+        for i,row in enumerate(duration):
+            a = scraper_autozone(row)
+            print(a)
+            progress_recorder.set_progress(i+1, total, row)
+            for b in a:
+                wr.writerow(b)
+    a = File.objects.all().count()+1
+    filename="autozone"+str(a)+".xlsx"
+    folder = "Autozone"
+    url = store_s3(filecsv="autozone.csv", folder=folder, filename=filename)
+    return url
+
+
+
+@shared_task(bind=True)
+def advance(self, duration):
+    progress_recorder = ProgressRecorder(self)
+    with open("advance.csv", 'w') as myfile:
+        wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+        # wr.writerow(["Input Part #","OE (Competitor Brand)","Competitor Part No.","Output – (WVE Part No.)","Part Type (Description)"])
+        wr.writerow(["Input Part ","Output – Part#","Mfg and Part Type","Price"])
+
+        total = len(duration)
+        for i,row in enumerate(duration):
+            a = scraper_advanceautoparts(row)
+            print(a)
+            progress_recorder.set_progress(i+1, total, row)
+            for b in a:
+                wr.writerow(b)
+    a = File.objects.all().count()+1
+    filename="advanceautopatrs"+str(a)+".xlsx"
+    folder = "AdvanceAutoparts"
+    url = store_s3(filecsv="advance.csv", folder=folder, filename=filename)
+    return url
+
+
+
+
+@shared_task(bind=True)
+def nepalonline(self, duration):
+    progress_recorder = ProgressRecorder(self)
+    with open("nepa.csv", 'w') as myfile:
+        wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+        # wr.writerow(["Input Part #","OE (Competitor Brand)","Competitor Part No.","Output – (WVE Part No.)","Part Type (Description)"])
+        wr.writerow(["Input Part ","Output – Part#","Mfg and Part Type","OE(Product Line)"," Online Price"])
+
+        total = len(duration)
+        for i,row in enumerate(duration):
+            a = webscraper_nepalonline(row)
+            print(a)
+            progress_recorder.set_progress(i+1, total, row)
+            for b in a:
+                wr.writerow(b)
+    a = File.objects.all().count()+1
+    filename="nepaonline"+str(a)+".xlsx"
+    folder = "NepaOnline"
+    url = store_s3(filecsv="nepa.csv", folder=folder, filename=filename)
+    return url
+
+
 
 
 
