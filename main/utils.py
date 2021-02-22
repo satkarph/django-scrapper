@@ -618,22 +618,35 @@ def scraper_oreillyautoparts(part_id):
     return found_values
 
 
-
 def scraper_autozone(part_id):
     driver = webdriver.Firefox(firefox_options=chrome_options)
-    driver.get('https://www.autozone.com/searchresult?searchText={0}'.format(part_id))
+    driver.get('https://www.autozone.com/')
     driver.delete_all_cookies()
+    a = driver.find_element_by_id('deskTopSearchInput')
+    a.send_keys(part_id)
+    a.send_keys(Keys.ENTER)
 
     part_found = 1
     found_values = []
     timeout = 10
+    print("hooo")
+    time.sleep(11)
+
     try:
-        image = driver.find_element_by_xpath('//*[@id="search-result-list"]/article[1]/a')
-        a = image.get_attribute('href')
-        print("dddddd")
-        print(a)
-        driver.get(a)
-        time.sleep(2)
+        print("kkkkkkkk")
+        try:
+            tick = driver.find_element_by_xpath('//*[@id="bx-element-1063397-UabrI5x"]/button')
+            print("ddoooo")
+            tick.click()
+        except:
+            pass
+            print("bobobobobob")
+        time.sleep(4)
+        image = driver.find_element_by_css_selector('#search-result-list > article > a > div> img')
+        print("llllllllllllllllllllllllll")
+        a = image.click()
+        time.sleep(4)
+        driver.save_screenshot("hello12.png")
         names = driver.find_elements_by_xpath('//*[@id="productTitle"]')
         price = driver.find_elements_by_xpath('//*[@id="priceContainer"]/div[1]/div[2]')
         print(price)
@@ -642,14 +655,14 @@ def scraper_autozone(part_id):
         price = list(filter(None, p))
         print(price)
 
-        for na , price in zip(names,price):
-            data= []
+        for na, price in zip(names, price):
+            data = []
             name = na.text
             part = name.split(' ')[-1]
             data.append(part_id)
             data.append(part)
             data.append(name)
-            data.append("$"+price)
+            data.append("$" + price)
             found_values.append(data)
     except:
         found_values.append([])
@@ -657,14 +670,6 @@ def scraper_autozone(part_id):
         found_values[0].append('Nothing found.')
     driver.quit()
     return found_values
-
-
-
-
-
-
-
-
 
 
 def scraper_advanceautoparts(part_id):
