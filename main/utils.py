@@ -549,41 +549,26 @@ def scraper_WVE(part_id):
 
 def scraper_oreillyautoparts(part_id):
     driver = webdriver.Firefox(firefox_options=chrome_options)
-    driver.get('https://www.oreillyauto.com/')
+    driver.get('https://www.oreillyauto.com/search/cross-reference?q={0}'.format(part_id))
     part_found = 1
     found_values = []
     timeout = 10
+    time.sleep(10)
+
+    # try:
+    # print("hiiiiiiiiiiiiiiiiiiiiiiiiii")
+    # interchange= driver.find_element_by_xpath('body > div.site-container > div > div.row.js-product-list > div.main-primary.col-md-9 > div > div > div.plp-header > div.interchange-banner > a')
+    # interchange.click()
+    # print("nnnnnnnnnnnnnnnnnnnn")
+    # time.sleep(7)
     try:
-        element_present = EC.presence_of_element_located(
-            (By.XPATH, '/html/body/div[3]/header/div[3]/div[2]/div[2]/div[1]/div[2]/div/form/input'))
-        WebDriverWait(driver, timeout).until(element_present)
-    except TimeoutException:
-        print("Timed out waiting for page to load")
-    time.sleep(2)
-    input_element = driver.find_element_by_xpath('/html/body/div[3]/header/div[3]/div[2]/div[2]/div[1]/div[2]/div/form/input')
-    input_element.send_keys(part_id)
-    input_element.send_keys(Keys.ENTER)
-
-    try:
-        element_present = EC.presence_of_element_located((By.XPATH, '/html/body/div[3]/div/div[2]/div[2]/div/div/div[2]/div/div/article/div[2]/div[1]/h2/a'))
-        WebDriverWait(driver, timeout).until(element_present)
-    except :
-        part_found = 0
-        print("Timed out waiting for page to load")
-
-
-    if (part_found == 1):
-        interchange= driver.find_element_by_xpath('/html/body/div[3]/div/div[2]/div[2]/div/div/div[1]/div[2]/a')
-        interchange.click()
-        time.sleep(7)
-
         name = driver.find_elements_by_class_name('js-product-name')
         linecode = driver.find_elements_by_class_name('line-code')
         item_number = driver.find_elements_by_class_name('item-number')
         replaced = driver.find_elements_by_class_name('manufacturer-replacement')
 
-        for it , na, line ,rep in zip(item_number,name,linecode,replaced):
-            data= []
+        for it, na, line, rep in zip(item_number, name, linecode, replaced):
+            data = []
             data.append(part_id)
             data.append(it.text)
             data.append(na.text)
@@ -592,14 +577,13 @@ def scraper_oreillyautoparts(part_id):
             print(na.text)
             print(line.text)
             atag = rep.find_elements_by_tag_name('a')
-            repp=""
+            repp = ""
             for a in atag:
                 atext = a.text
-                repp = atext+repp
+                repp = atext + repp
 
             data.append(repp)
             found_values.append(data)
-
 
         # found_values.append([])
         # #print(part_id)
@@ -607,15 +591,17 @@ def scraper_oreillyautoparts(part_id):
         # description = driver.find_element_by_xpath('/html/body/div[3]/div/div[2]/div[2]/div/div/div[2]/div/div/article/div[2]/div[1]/h2/a')
         # #print(description.text)
         # found_values[0].append(description.text)
-    else:
+    except:
         found_values.append([])
         found_values[0].append(part_id)
         found_values[0].append('Nothing found.')
 
-
-
     driver.quit()
     return found_values
+
+
+
+
 
 
 def scraper_autozone(part_id):
