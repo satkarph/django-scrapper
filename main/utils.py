@@ -567,7 +567,7 @@ def scraper_oreillyautoparts(part_id):
     try:
         element_present = EC.presence_of_element_located((By.XPATH, '/html/body/div[3]/div/div[2]/div[2]/div/div/div[2]/div/div/article/div[2]/div[1]/h2/a'))
         WebDriverWait(driver, timeout).until(element_present)
-    except TimeoutException:
+    except :
         part_found = 0
         print("Timed out waiting for page to load")
 
