@@ -324,6 +324,7 @@ def scraper_opticat(part_id):
     part_found = 1
     found_values = []
     timeout = 10
+    time.sleep(5)
     try:
         element_present = EC.presence_of_element_located(
             (By.XPATH, '/html/body/header/div[1]/div[2]/div/div[1]/form/div/input'))
