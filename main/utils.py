@@ -74,13 +74,15 @@ def scraper_spectra(part_id):
         # print(part_id)
         found_values.append([])
         found_values[0].append(part_id)
-        found_values[0].append(part_id)
+        out = driver.find_element_by_css_selector('#interchanges_index > section > article > h5 > a').text
+        found_values[0].append(out)
         part_name = driver.find_element_by_class_name("ligne")
         # print(part_name.text)
         found_values[0].append(part_name.text)
         oe = driver.find_element_by_class_name("marque")
         # print(oe.text)
         found_values[0].append(oe.text)
+        print(found_values)
     else:
         found_values.append([])
         found_values[0].append(part_id)

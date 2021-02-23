@@ -320,7 +320,7 @@ def advance(self, duration):
 @shared_task(bind=True)
 def nepalonline(self, duration):
     progress_recorder = ProgressRecorder(self)
-    with open("nepa.csv", 'w') as myfile:
+    with open("napa.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         # wr.writerow(["Input Part #","OE (Competitor Brand)","Competitor Part No.","Output – (WVE Part No.)","Part Type (Description)"])
         wr.writerow(["Input Part ","Output – Part#","Mfg and Part Type","OE(Product Line)"," Online Price"])
@@ -333,9 +333,9 @@ def nepalonline(self, duration):
             for b in a:
                 wr.writerow(b)
     a = File.objects.all().count()+1
-    filename="nepaonline"+str(a)+".xlsx"
+    filename="napaonline"+str(a)+".xlsx"
     folder = "NepaOnline"
-    url = store_s3(filecsv="nepa.csv", folder=folder, filename=filename)
+    url = store_s3(filecsv="napa.csv", folder=folder, filename=filename)
     return url
 
 
