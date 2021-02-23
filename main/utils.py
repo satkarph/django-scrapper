@@ -320,20 +320,27 @@ def scraper_carter(part_id):
 
 def scraper_opticat(part_id):
     driver = webdriver.Firefox(firefox_options=chrome_options)
-    driver.get('https://www.opticatonline.com/')
     part_found = 1
     found_values = []
     timeout = 10
     time.sleep(5)
-    try:
-        element_present = EC.presence_of_element_located(
-            (By.XPATH, '/html/body/header/div[1]/div[2]/div/div[1]/form/div/input'))
-        WebDriverWait(driver, timeout).until(element_present)
-    except TimeoutException:
-        print("Timed out waiting for page to load")
-    input_element = driver.find_element_by_xpath('/html/body/header/div[1]/div[2]/div/div[1]/form/div/input')
-    input_element.send_keys(part_id)
-    input_element.send_keys(Keys.ENTER)
+    # try:
+    #     element_present = EC.presence_of_element_located(
+    #         (By.XPATH, '/html/body/header/div[1]/div[2]/div/div[1]/form/div/input'))
+    #     WebDriverWait(driver, timeout).until(element_present)
+    # except TimeoutException:
+    #     print("Timed out waiting for page to load")
+    while True:
+        try:
+            driver.get('https://www.opticatonline.com/')
+            time.sleep(5)
+            input_element = driver.find_element_by_xpath('/html/body/header/div[1]/div[2]/div/div[1]/form/div/input')
+            input_element.send_keys(part_id)
+            input_element.send_keys(Keys.ENTER)
+            break
+        except:
+            pass
+
 
     try:
         element_present = EC.presence_of_element_located((By.XPATH, '/html/body/section/div/div/div[2]/table/tbody/tr'))
