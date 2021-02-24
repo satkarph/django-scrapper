@@ -32,7 +32,7 @@ from time import sleep
 #         print("heheheheh")
 #     return 'Done'
 
-from .models import File
+from .models import File,Switch_Scrap
 
 
 @shared_task(bind=True)
@@ -47,6 +47,11 @@ def go_to_sleep(self, duration):
             progress_recorder.set_progress(i+1, total, row)
             for b in a:
                 wr.writerow(b)
+            check =Switch_Scrap.objects.all()[0]
+            stop = check.stop
+            if stop:
+                break
+
 
     # f = open("ecat.csv", "r", encoding='utf-8')
     # g=f.read()
@@ -71,6 +76,10 @@ def sairtex(self, duration):
             progress_recorder.set_progress(i+1, total, row)
             for b in a:
                 wr.writerow(b)
+            check = Switch_Scrap.objects.all()[0]
+            stop = check.stop
+            if stop:
+                break
     #
     # f = open("air.xlsx", "r", encoding='utf-8')
     # g=f.read()
@@ -99,6 +108,10 @@ def webmotors(self, duration):
             progress_recorder.set_progress(i+1, total, row)
             for b in a:
                 wr.writerow(b)
+            check = Switch_Scrap.objects.all()[0]
+            stop = check.stop
+            if stop:
+                break
 
     # f = open("motor.xlsx", "r", encoding='utf-8')
     # g =f.read()
@@ -127,6 +140,10 @@ def autoparts(self, duration):
             for b in a:
                 print(row)
                 wr.writerow(b)
+            check = Switch_Scrap.objects.all()[0]
+            stop = check.stop
+            if stop:
+                break
     a = File.objects.all().count()+1
     filename="DENSAutoparts"+str(a)+".xlsx"
     folder = "densoautoparts"
@@ -146,6 +163,10 @@ def carter(self, duration):
             progress_recorder.set_progress(i+1, total, row)
             for b in a:
                 wr.writerow(b)
+            check = Switch_Scrap.objects.all()[0]
+            stop = check.stop
+            if stop:
+                break
     a = File.objects.all().count()+1
     filename="carter"+str(a)+".xlsx"
     folder = "Carter"
@@ -166,6 +187,10 @@ def opticat(self, duration):
             progress_recorder.set_progress(i+1, total, row)
             for b in a:
                 wr.writerow(b)
+            check = Switch_Scrap.objects.all()[0]
+            stop = check.stop
+            if stop:
+                break
 
     #
     a = File.objects.all().count()+1
@@ -192,6 +217,10 @@ def standard(self, duration):
             progress_recorder.set_progress(i+1, total, row)
             for b in a:
                 wr.writerow(b)
+            check = Switch_Scrap.objects.all()[0]
+            stop = check.stop
+            if stop:
+                break
     a = File.objects.all().count()+1
     filename="standard"+str(a)+".xlsx"
     folder = "Standard"
@@ -215,6 +244,10 @@ def bwd(self, duration):
                 except:
                     pass
                 wr.writerow(b)
+            check = Switch_Scrap.objects.all()[0]
+            stop = check.stop
+            if stop:
+                break
     a = File.objects.all().count()+1
     filename="bwd"+str(a)+".xlsx"
     folder = "BWD"
@@ -241,6 +274,10 @@ def wve(self, duration):
                     pass
                 print(b)
                 wr.writerow(b)
+            check = Switch_Scrap.objects.all()[0]
+            stop = check.stop
+            if stop:
+                break
     a = File.objects.all().count()+1
     filename="wve"+str(a)+".xlsx"
     folder = "WVE"
@@ -264,6 +301,10 @@ def oreo(self, duration):
             progress_recorder.set_progress(i+1, total, row)
             for b in a:
                 wr.writerow(b)
+            check = Switch_Scrap.objects.all()[0]
+            stop = check.stop
+            if stop:
+                break
     a = File.objects.all().count()+1
     filename="oreillyautoparts"+str(a)+".xlsx"
     folder = "Oreillyautoparts"
@@ -285,6 +326,10 @@ def autozone(self, duration):
             progress_recorder.set_progress(i+1, total, row)
             for b in a:
                 wr.writerow(b)
+            check = Switch_Scrap.objects.all()[0]
+            stop = check.stop
+            if stop:
+                break
     a = File.objects.all().count()+1
     filename="autozone"+str(a)+".xlsx"
     folder = "Autozone"
@@ -308,6 +353,10 @@ def advance(self, duration):
             progress_recorder.set_progress(i+1, total, row)
             for b in a:
                 wr.writerow(b)
+            check = Switch_Scrap.objects.all()[0]
+            stop = check.stop
+            if stop:
+                break
     a = File.objects.all().count()+1
     filename="advanceautopatrs"+str(a)+".xlsx"
     folder = "AdvanceAutoparts"
@@ -332,6 +381,10 @@ def nepalonline(self, duration):
             progress_recorder.set_progress(i+1, total, row)
             for b in a:
                 wr.writerow(b)
+            check = Switch_Scrap.objects.all()[0]
+            stop = check.stop
+            if stop:
+                break
     a = File.objects.all().count()+1
     filename="napaonline"+str(a)+".xlsx"
     folder = "NepaOnline"

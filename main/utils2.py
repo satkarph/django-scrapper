@@ -1,7 +1,7 @@
 import io
 import pandas as pd
 import boto3
-from .models import File
+from .models import File,Switch_Scrap
 def store_s3(filecsv,folder,filename):
     df = pd.read_csv(filecsv,error_bad_lines=False)
     with io.BytesIO() as output:
@@ -20,3 +20,11 @@ def store_s3(filecsv,folder,filename):
     return url
 
 
+def check_status():
+    a=Switch_Scrap.objects.all()
+    if a:
+        obj = a[0]
+        obj.stop =False
+        obj.save()
+    else:
+       da= Switch_Scrap.objects.create(stop=False)

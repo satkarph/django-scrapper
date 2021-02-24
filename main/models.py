@@ -8,3 +8,7 @@ class File(models.Model):
 
     def __str__(self):
         return self.url
+
+class Switch_Scrap(models.Model):
+    stop = models.NullBooleanField(blank=True,null=True,default=False)
+

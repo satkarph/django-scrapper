@@ -8,9 +8,11 @@ import io
 import csv
 import pandas as pd
 import openpyxl
-from .models import File
+from .models import File,Switch_Scrap
 from .serializer import FileSer
+from .utils2 import check_status
 # Create your views here.
+
 class Userdetail(APIView):
     permission_classes = (AllowAny,)
     def post(self, request):
@@ -19,8 +21,9 @@ class Userdetail(APIView):
         file = request.FILES['file']
         wb = openpyxl.load_workbook(file)
         worksheet = wb.active
-
         data = []
+        check_status()
+
         for row in worksheet.iter_rows():
             for cell in row:
                 data.append(str(cell.value))
@@ -53,8 +56,11 @@ class Airtex(APIView):
         file = request.FILES['file']
         wb = openpyxl.load_workbook(file)
         worksheet = wb.active
+        check_status()
+
 
         data = []
+        obj,cre = Switch_Scrap.objects.update_or_create(id=1,stop=False)
         for row in worksheet.iter_rows():
             for cell in row:
                 data.append(str(cell.value))
@@ -75,12 +81,15 @@ class Mootors(APIView):
         uuid = self.request.query_params.get('id', None)
 
         file = request.FILES['file']
+        check_status()
+
         wb = openpyxl.load_workbook(file)
 
 
         worksheet = wb.active
 
         data = []
+        obj,cre = Switch_Scrap.objects.update_or_create(id=1,stop=False)
         for row in worksheet.iter_rows():
             for cell in row:
                 data.append(str(cell.value))
@@ -103,8 +112,11 @@ class Autoparts(APIView):
         file = request.FILES['file']
         wb = openpyxl.load_workbook(file)
         worksheet = wb.active
+        check_status()
+
 
         data = []
+        obj,cre = Switch_Scrap.objects.update_or_create(id=1,stop=False)
         for row in worksheet.iter_rows():
             for cell in row:
                 data.append(str(cell.value))
@@ -124,10 +136,13 @@ class Carter(APIView):
     def post(self, request):
         uuid = self.request.query_params.get('id', None)
         file = request.FILES['file']
+        check_status()
+
         wb = openpyxl.load_workbook(file)
         worksheet = wb.active
 
         data = []
+        obj,cre = Switch_Scrap.objects.update_or_create(id=1,stop=False)
         for row in worksheet.iter_rows():
             for cell in row:
                 data.append(str(cell.value))
@@ -148,10 +163,13 @@ class Opticat(APIView):
         uuid = self.request.query_params.get('id', None)
 
         file = request.FILES['file']
+        check_status()
+
         wb = openpyxl.load_workbook(file)
         worksheet = wb.active
 
         data = []
+        obj,cre = Switch_Scrap.objects.update_or_create(id=1,stop=False)
         for row in worksheet.iter_rows():
             for cell in row:
                 data.append(str(cell.value))
@@ -170,10 +188,13 @@ class Standard(APIView):
         uuid = self.request.query_params.get('id', None)
 
         file = request.FILES['file']
+        check_status()
+
         wb = openpyxl.load_workbook(file)
         worksheet = wb.active
 
         data = []
+        obj,cre = Switch_Scrap.objects.update_or_create(id=1,stop=False)
         for row in worksheet.iter_rows():
             for cell in row:
                 data.append(str(cell.value))
@@ -194,10 +215,13 @@ class BWD(APIView):
         uuid = self.request.query_params.get('id', None)
 
         file = request.FILES['file']
+        check_status()
+
         wb = openpyxl.load_workbook(file)
         worksheet = wb.active
 
         data = []
+        obj,cre = Switch_Scrap.objects.update_or_create(id=1,stop=False)
         for row in worksheet.iter_rows():
             for cell in row:
                 data.append(str(cell.value))
@@ -225,10 +249,13 @@ class WVVE(APIView):
         uuid = self.request.query_params.get('id', None)
 
         file = request.FILES['file']
+        check_status()
+
         wb = openpyxl.load_workbook(file)
         worksheet = wb.active
 
         data = []
+        obj,cre = Switch_Scrap.objects.update_or_create(id=1,stop=False)
         for row in worksheet.iter_rows():
             for cell in row:
                 data.append(str(cell.value))
@@ -251,10 +278,13 @@ class Oreo(APIView):
         uuid = self.request.query_params.get('id', None)
 
         file = request.FILES['file']
+        check_status()
+
         wb = openpyxl.load_workbook(file)
         worksheet = wb.active
 
         data = []
+        obj,cre = Switch_Scrap.objects.update_or_create(id=1,stop=False)
         for row in worksheet.iter_rows():
             for cell in row:
                 data.append(str(cell.value))
@@ -277,6 +307,8 @@ class Autozone(APIView):
         uuid = self.request.query_params.get('id', None)
 
         file = request.FILES['file']
+        check_status()
+
         wb = openpyxl.load_workbook(file)
         worksheet = wb.active
 
@@ -304,6 +336,8 @@ class Advance(APIView):
 
         file = request.FILES['file']
         wb = openpyxl.load_workbook(file)
+        check_status()
+
         worksheet = wb.active
 
         data = []
@@ -329,6 +363,8 @@ class Nepa(APIView):
         uuid = self.request.query_params.get('id', None)
 
         file = request.FILES['file']
+        check_status()
+
         wb = openpyxl.load_workbook(file)
         worksheet = wb.active
 
@@ -346,3 +382,17 @@ class Nepa(APIView):
         # a = scraper_spectra(uuid)
         content={"task_id":str(task)}
         return Response(content)
+
+
+
+class Stop(APIView):
+    permission_classes = (AllowAny,)
+    def get(self, request):
+        a = Switch_Scrap.objects.all()
+        if a:
+            obj = a[0]
+            obj.stop = True
+            obj.save()
+        else:
+            da = Switch_Scrap.objects.create(stop=True)
+        return Response("Stop successfully")
