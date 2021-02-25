@@ -2,7 +2,7 @@ import io
 import pandas as pd
 import boto3
 from .models import File,Switch_Scrap
-def store_s3(filecsv,folder,filename,total):
+def store_s3(filecsv,folder,filename):
     df = pd.read_csv(filecsv,error_bad_lines=False)
     index = df.index
     number_of_rows = len(index)
