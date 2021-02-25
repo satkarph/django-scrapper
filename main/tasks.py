@@ -387,7 +387,7 @@ def nepalonline(self, duration):
                 break
     a = File.objects.all().count()+1
     filename="napaonline"+str(a)+".xlsx"
-    folder = "NepaOnline"
+    folder = "NapaOnline"
     url = store_s3(filecsv="napa.csv", folder=folder, filename=filename)
     return url
 
