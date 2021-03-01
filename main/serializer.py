@@ -14,7 +14,8 @@ class FileSer(serializers.ModelSerializer):
             'name',
             'url',
             'time',
-            'column')
+            'column',
+            'fileName')
 
     def get_time(self, obj):
         date = obj.created_date

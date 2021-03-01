@@ -36,7 +36,7 @@ from .models import File,Switch_Scrap
 
 
 @shared_task(bind=True)
-def go_to_sleep(self, duration):
+def go_to_sleep(self, duration,fileName):
     progress_recorder = ProgressRecorder(self)
     with open("ecat.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
@@ -59,13 +59,13 @@ def go_to_sleep(self, duration):
     a= File.objects.all().count()+1
     filename="spectrapremium"+str(a)+".xlsx"
     folder = "ecaTspectrapremiumCom"
-    url = store_s3(filecsv="ecat.csv", folder=folder, filename=filename)
+    url = store_s3(filecsv="ecat.csv", folder=folder, filename=filename,FileName=fileName)
 
     return url
 
 
 @shared_task(bind=True)
-def sairtex(self, duration):
+def sairtex(self, duration,fileName):
     progress_recorder = ProgressRecorder(self)
     with open("air.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
@@ -87,7 +87,7 @@ def sairtex(self, duration):
     a= File.objects.all().count()+1
     filename="Airtex"+str(a)+".xlsx"
     folder = "Airtex"
-    url = store_s3(filecsv="air.csv", folder=folder, filename=filename)
+    url = store_s3(filecsv="air.csv", folder=folder, filename=filename,FileName=fileName)
 
 
     return url
@@ -96,7 +96,7 @@ def sairtex(self, duration):
 
 
 @shared_task(bind=True)
-def webmotors(self, duration):
+def webmotors(self, duration,fileName):
     progress_recorder = ProgressRecorder(self)
     with open("motor.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
@@ -120,14 +120,14 @@ def webmotors(self, duration):
     filename="Usmotor"+str(a)+".xlsx"
 
     folder = "Usmotor"
-    url = store_s3(filecsv="motor.csv", folder=folder, filename=filename)
+    url = store_s3(filecsv="motor.csv", folder=folder, filename=filename,FileName=fileName)
     return url
 
 
 
 
 @shared_task(bind=True)
-def autoparts(self, duration):
+def autoparts(self, duration,fileName):
     progress_recorder = ProgressRecorder(self)
     with open("DENSAutoparts.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
@@ -147,11 +147,11 @@ def autoparts(self, duration):
     a = File.objects.all().count()+1
     filename="DENSAutoparts"+str(a)+".xlsx"
     folder = "densoautoparts"
-    url = store_s3(filecsv="DENSAutoparts.csv", folder=folder, filename=filename)
+    url = store_s3(filecsv="DENSAutoparts.csv", folder=folder, filename=filename,FileName=fileName)
     return url
 
 @shared_task(bind=True)
-def carter(self, duration):
+def carter(self, duration,fileName):
     progress_recorder = ProgressRecorder(self)
     with open("carter.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
@@ -170,12 +170,12 @@ def carter(self, duration):
     a = File.objects.all().count()+1
     filename="carter"+str(a)+".xlsx"
     folder = "Carter"
-    url = store_s3(filecsv="carter.csv", folder=folder, filename=filename)
+    url = store_s3(filecsv="carter.csv", folder=folder, filename=filename,FileName=fileName)
     return url
 
 
 @shared_task(bind=True)
-def opticat(self, duration):
+def opticat(self, duration,fileName):
     progress_recorder = ProgressRecorder(self)
     with open("opticat.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
@@ -196,12 +196,12 @@ def opticat(self, duration):
     a = File.objects.all().count()+1
     filename="opticat"+str(a)+".xlsx"
     folder = "Opticat"
-    url = store_s3(filecsv="opticat.csv", folder=folder, filename=filename)
+    url = store_s3(filecsv="opticat.csv", folder=folder, filename=filename,FileName=fileName)
     return url
 
 
 @shared_task(bind=True)
-def standard(self, duration):
+def standard(self, duration,fileName):
     progress_recorder = ProgressRecorder(self)
     with open("standard.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
@@ -224,11 +224,11 @@ def standard(self, duration):
     a = File.objects.all().count()+1
     filename="standard"+str(a)+".xlsx"
     folder = "Standard"
-    url = store_s3(filecsv="standard.csv", folder=folder, filename=filename)
+    url = store_s3(filecsv="standard.csv", folder=folder, filename=filename,FileName=fileName)
     return url
 
 @shared_task(bind=True)
-def bwd(self, duration):
+def bwd(self, duration,fileName):
     progress_recorder = ProgressRecorder(self)
     with open("bwd.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
@@ -251,11 +251,11 @@ def bwd(self, duration):
     a = File.objects.all().count()+1
     filename="bwd"+str(a)+".xlsx"
     folder = "BWD"
-    url = store_s3(filecsv="bwd.csv", folder=folder, filename=filename)
+    url = store_s3(filecsv="bwd.csv", folder=folder, filename=filename,FileName=fileName)
     return url
 
 @shared_task(bind=True)
-def wve(self, duration):
+def wve(self, duration,fileName):
     progress_recorder = ProgressRecorder(self)
     with open("wve.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
@@ -281,13 +281,13 @@ def wve(self, duration):
     a = File.objects.all().count()+1
     filename="wve"+str(a)+".xlsx"
     folder = "WVE"
-    url = store_s3(filecsv="wve.csv", folder=folder, filename=filename)
+    url = store_s3(filecsv="wve.csv", folder=folder, filename=filename,FileName=fileName)
     return url
 
 
 
 @shared_task(bind=True)
-def oreo(self, duration):
+def oreo(self, duration,fileName):
     progress_recorder = ProgressRecorder(self)
     with open("oreo.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
@@ -308,11 +308,11 @@ def oreo(self, duration):
     a = File.objects.all().count()+1
     filename="oreillyautoparts"+str(a)+".xlsx"
     folder = "Oreillyautoparts"
-    url = store_s3(filecsv="oreo.csv", folder=folder, filename=filename)
+    url = store_s3(filecsv="oreo.csv", folder=folder, filename=filename,FileName=fileName)
     return url
 
 @shared_task(bind=True)
-def autozone(self, duration):
+def autozone(self, duration,fileName):
     progress_recorder = ProgressRecorder(self)
     with open("autozone.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
@@ -333,13 +333,13 @@ def autozone(self, duration):
     a = File.objects.all().count()+1
     filename="autozone"+str(a)+".xlsx"
     folder = "Autozone"
-    url = store_s3(filecsv="autozone.csv", folder=folder, filename=filename)
+    url = store_s3(filecsv="autozone.csv", folder=folder, filename=filename,FileName=fileName)
     return url
 
 
 
 @shared_task(bind=True)
-def advance(self, duration):
+def advance(self, duration,fileName):
     progress_recorder = ProgressRecorder(self)
     with open("advance.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
@@ -360,14 +360,14 @@ def advance(self, duration):
     a = File.objects.all().count()+1
     filename="advanceautopatrs"+str(a)+".xlsx"
     folder = "AdvanceAutoparts"
-    url = store_s3(filecsv="advance.csv", folder=folder, filename=filename)
+    url = store_s3(filecsv="advance.csv", folder=folder, filename=filename,FileName=fileName)
     return url
 
 
 
 
 @shared_task(bind=True)
-def nepalonline(self, duration):
+def nepalonline(self, duration,fileName):
     progress_recorder = ProgressRecorder(self)
     with open("napa.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
@@ -388,7 +388,7 @@ def nepalonline(self, duration):
     a = File.objects.all().count()+1
     filename="napaonline"+str(a)+".xlsx"
     folder = "NapaOnline"
-    url = store_s3(filecsv="napa.csv", folder=folder, filename=filename)
+    url = store_s3(filecsv="napa.csv", folder=folder, filename=filename,FileName=fileName)
     return url
 
 

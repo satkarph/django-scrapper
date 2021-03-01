@@ -19,6 +19,7 @@ class Userdetail(APIView):
         uuid = self.request.query_params.get('id', None)
 
         file = request.FILES['file']
+        filename = file.name
         wb = openpyxl.load_workbook(file)
         worksheet = wb.active
         data = []
@@ -42,7 +43,7 @@ class Userdetail(APIView):
 
         # go_to_sleep.delay(uuid=["16147161387"])
         #
-        task = go_to_sleep.delay(data)
+        task = go_to_sleep.delay(duration=data,fileName=filename)
         print(task)
         # a = scraper_spectra(uuid)
         content={"task_id":str(task)}
@@ -54,6 +55,7 @@ class Airtex(APIView):
         uuid = self.request.query_params.get('id', None)
 
         file = request.FILES['file']
+        filename = file.name
         wb = openpyxl.load_workbook(file)
         worksheet = wb.active
         check_status()
@@ -68,7 +70,7 @@ class Airtex(APIView):
         # go_to_sleep.delay(uuid=["16147161387"])
         data = list(filter(None, data))
         data = [d for d in data if d != "None"]
-        task = sairtex.delay(data)
+        task = sairtex.delay(duration=data,fileName=filename)
         print(task)
         # a = scraper_spectra(uuid)
         content={"task_id":str(task)}
@@ -81,6 +83,7 @@ class Mootors(APIView):
         uuid = self.request.query_params.get('id', None)
 
         file = request.FILES['file']
+        filename = file.name
         check_status()
 
         wb = openpyxl.load_workbook(file)
@@ -97,7 +100,7 @@ class Mootors(APIView):
         # go_to_sleep.delay(uuid=["16147161387"])
         data = list(filter(None, data))
         data = [d for d in data if d != "None"]
-        task = webmotors.delay(data)
+        task = webmotors.delay(duration=data,fileName=filename)
         print(task)
         # a = scraper_spectra(uuid)
         content={"task_id":str(task)}
@@ -110,6 +113,7 @@ class Autoparts(APIView):
         uuid = self.request.query_params.get('id', None)
 
         file = request.FILES['file']
+        filename = file.name
         wb = openpyxl.load_workbook(file)
         worksheet = wb.active
         check_status()
@@ -124,7 +128,7 @@ class Autoparts(APIView):
         # go_to_sleep.delay(uuid=["16147161387"])
         data = list(filter(None, data))
         data = [d for d in data if d != "None"]
-        task = autoparts.delay(data)
+        task = autoparts.delay(duration=data,fileName=filename)
         print(task)
         # a = scraper_spectra(uuid)
         content={"task_id":str(task)}
@@ -136,6 +140,7 @@ class Carter(APIView):
     def post(self, request):
         uuid = self.request.query_params.get('id', None)
         file = request.FILES['file']
+        filename = file.name
         check_status()
 
         wb = openpyxl.load_workbook(file)
@@ -151,7 +156,7 @@ class Carter(APIView):
         data = list(filter(None, data))
         data = [d for d in data if d != "None"]
 
-        task = carter.delay(data)
+        task = carter.delay(duration=data,fileName=filename)
         print(task)
         # a = scraper_spectra(uuid)
         content={"task_id":str(task)}
@@ -163,6 +168,7 @@ class Opticat(APIView):
         uuid = self.request.query_params.get('id', None)
 
         file = request.FILES['file']
+        filename = file.name
         check_status()
 
         wb = openpyxl.load_workbook(file)
@@ -176,7 +182,7 @@ class Opticat(APIView):
         data = list(filter(None, data))
         data = [d for d in data if d != "None"]
 
-        task = opticat.delay(data)
+        task = opticat.delay(duration=data,fileName=filename)
         print(task)
         # a = scraper_spectra(uuid)
         content={"task_id":str(task)}
@@ -188,6 +194,7 @@ class Standard(APIView):
         uuid = self.request.query_params.get('id', None)
 
         file = request.FILES['file']
+        filename = file.name
         check_status()
 
         wb = openpyxl.load_workbook(file)
@@ -203,7 +210,7 @@ class Standard(APIView):
         data = list(filter(None, data))
         data = [d for d in data if d != "None"]
 
-        task = standard.delay(data)
+        task = standard.delay(duration=data,fileName=filename)
         print(task)
         # a = scraper_spectra(uuid)
         content={"task_id":str(task)}
@@ -215,6 +222,7 @@ class BWD(APIView):
         uuid = self.request.query_params.get('id', None)
 
         file = request.FILES['file']
+        filename = file.name
         check_status()
 
         wb = openpyxl.load_workbook(file)
@@ -230,7 +238,7 @@ class BWD(APIView):
 
         # go_to_sleep.delay(uuid=["16147161387"])
 
-        task = bwd.delay(data)
+        task = bwd.delay(duration=data,fileName=filename)
         print(task)
         # a = scraper_spectra(uuid)
         content={"task_id":str(task)}
@@ -249,6 +257,8 @@ class WVVE(APIView):
         uuid = self.request.query_params.get('id', None)
 
         file = request.FILES['file']
+        filename = file.name
+
         check_status()
 
         wb = openpyxl.load_workbook(file)
@@ -264,7 +274,7 @@ class WVVE(APIView):
 
         # go_to_sleep.delay(uuid=["16147161387"])
 
-        task = wve.delay(data)
+        task = wve.delay(duration=data,fileName=filename)
         print(task)
         # a = scraper_spectra(uuid)
         content={"task_id":str(task)}
@@ -279,6 +289,8 @@ class Oreo(APIView):
 
         file = request.FILES['file']
         check_status()
+        filename = file.name
+
 
         wb = openpyxl.load_workbook(file)
         worksheet = wb.active
@@ -293,7 +305,7 @@ class Oreo(APIView):
 
         # go_to_sleep.delay(uuid=["16147161387"])
 
-        task = oreo.delay(data)
+        task = oreo.delay(duration=data,fileName=filename)
         print(task)
         # a = scraper_spectra(uuid)
         content={"task_id":str(task)}
@@ -307,6 +319,8 @@ class Autozone(APIView):
         uuid = self.request.query_params.get('id', None)
 
         file = request.FILES['file']
+        filename = file.name
+
         check_status()
 
         wb = openpyxl.load_workbook(file)
@@ -321,7 +335,7 @@ class Autozone(APIView):
 
         # go_to_sleep.delay(uuid=["16147161387"])
 
-        task = autozone.delay(data)
+        task = autozone.delay(duration=data,fileName=filename)
         print(task)
         # a = scraper_spectra(uuid)
         content={"task_id":str(task)}
@@ -337,6 +351,7 @@ class Advance(APIView):
         file = request.FILES['file']
         wb = openpyxl.load_workbook(file)
         check_status()
+        filename = file.name
 
         worksheet = wb.active
 
@@ -349,7 +364,7 @@ class Advance(APIView):
 
         # go_to_sleep.delay(uuid=["16147161387"])
 
-        task = advance.delay(data)
+        task = advance.delay(duration=data,fileName=filename)
         print(task)
         # a = scraper_spectra(uuid)
         content={"task_id":str(task)}
@@ -363,9 +378,11 @@ class Nepa(APIView):
         uuid = self.request.query_params.get('id', None)
 
         file = request.FILES['file']
+        filename = file.name
+
         check_status()
 
-        wb = openpyxl.load_workbook(file)
+        wb = openpyxl.load_workbook(file,filename)
         worksheet = wb.active
 
         data = []
@@ -377,7 +394,7 @@ class Nepa(APIView):
 
         # go_to_sleep.delay(uuid=["16147161387"])
 
-        task = nepalonline.delay(data)
+        task = nepalonline.delay(duration=data,fileName=filename)
         print(task)
         # a = scraper_spectra(uuid)
         content={"task_id":str(task)}
