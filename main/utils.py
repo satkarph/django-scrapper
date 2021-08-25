@@ -743,4 +743,104 @@ def webscraper_nepalonline(part_id):
     driver.quit()
     return found_values
 
+def webscraplara(part_id):
+    driver = webdriver.Firefox(firefox_options=chrome_options)
+    part_found = 1
+    found_values = []
+    timeout = 10
+    try:
+        a = webdriver.Chrome(executable_path="chromedriver.exe")
+        a.get("https://cofs.lara.state.mi.us/SearchApi/Search/Search")
+        a.find_element_by_id('txtEntityName').send_keys(part_id)
+        a.find_element_by_id('SearchSubmit').click()
+        time.sleep(3)
+        page_source = a.page_source
+        f = open("demofile3.html", "w")
+        f.write(page_source)
+        f.close()
+        soup = BeautifulSoup(page_source, 'lxml')
+        ta = soup.find_all('table')
+        table = ta[0]
+        link = table.find_all('a', class_='link')
+        print(link)
+        # for l in link:
+        #     print(l['href'])
+        lin = link[0]['href']
+        a.get(lin)
+        page_source = a.page_source
+        soup = BeautifulSoup(page_source, 'lxml')
+
+
+        main_id =soup.find("span", id="MainContent_lblIDNumberHeader").text
+        main_name =soup.find("span", id="MainContent_lblEntityNameHeader").text
+        entityname = main_name
+        entitytype = soup.find("span", id="MainContent_lblEntityType").text
+        identification_number = soup.find("span", id="MainContent_lblIDNumber").text
+        entity_ido_number = None
+        date_of_org = soup.find("span", id="MainContent_lblOrganisationDate").text
+        date_of_org_active = None
+        purpose  = soup.find("span", id="MainContent_lblPurpose").text
+        print(identification_number)
+        print(entityname)
+        print(date_of_org)
+        term = soup.find("span", id="MainContent_lblTerm").text
+        resident_name = soup.find("span", id="MainContent_lblResidentAgentNamelbl").text
+
+        resident_steet_add = soup.find("span", id="MainContent_lblResidentStreet").text
+        residentapt = soup.find("span", id="MainContent_lblaptsuiteother").text
+        resident_city = soup.find("span", id="MainContent_lblResidentCity").text
+        resident_state = soup.find("span", id="MainContent_lblResidentState").text
+        resident_zip = soup.find("span", id="MainContent_lblResidentZip").text
+        principlestrret = soup.find("span", id="MainContent_lblPrincipleStreet").text
+        principleapt = soup.find("span", id="MainContent_lblaptsuiteotherlblpricipal").text
+        printciplecity = soup.find("span", id="MainContent_lblPrincipleCity").text
+        principlestate = soup.find("span", id="MainContent_lblPrincipleState").text
+
+        principlezip = soup.find("span", id="MainContent_lblPrincipleZip").text
+
+        act_under = soup.find("span", id="MainContent_lblActsFormedUnder").text
+        managed_by = soup.find("input", id="MainContent_Managedbytext")['value']
+        print("------------------------")
+        print(managed_by)
+        print(principlestate)
+        print(resident_city)
+        select = Select(a.find_element_by_id('MainContent_lstFilings'))
+        select.select_by_value('00A')
+        a.find_element_by_id('MainContent_btnViewFilings').click()
+        page_source = a.page_source
+        soup = BeautifulSoup(page_source, 'lxml')
+        try:
+            table = soup.find("table", id="MainContent_grdSearchResults")
+            table_data = table.find("tr", class_="GridRow")
+            tds = table_data.find_all("td")
+
+            name_filling = tds[1].text
+            year_filling = tds[2].text
+            date_filling = tds[3].text
+            filling_number = tds[4].text
+            file_filling = tds[5].find('a')['href']
+        except:
+            name_filling=None
+            year_filling=None
+            date_filling=None
+            file_filling=None
+            filling_number=None
+
+
+
+
+        data = [main_id,main_name,entityname,None,entitytype,identification_number,entity_ido_number,
+                date_of_org, date_of_org_active,purpose,term,resident_name,resident_steet_add,residentapt,
+                resident_city,resident_state,resident_zip,principlestrret,principleapt,printciplecity,principlestate,
+                principlezip,name_filling,year_filling,date_filling,file_filling,filling_number
+                ]
+        found_values.append(data)
+
+    except:
+        found_values.append([])
+        found_values[0].append(part_id)
+        found_values[0].append('Nothing found.')
+        driver.quit()
+    return found_values
+
 

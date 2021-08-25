@@ -1,7 +1,7 @@
 from celery import shared_task
 from celery_progress.backend import ProgressRecorder
 from .utils import scraper_spectra,airtex,scraper_usmotorworks,scraper_densoautoparts,scraper_carter,scraper_opticat,scraper_standard,scraper_BWD ,\
-    scraper_WVE,scraper_oreillyautoparts,scraper_autozone,scraper_advanceautoparts,webscraper_nepalonline
+    scraper_WVE,scraper_oreillyautoparts,scraper_autozone,scraper_advanceautoparts,webscraper_nepalonline,webscraplara
 import csv
 import boto3
 import pandas as pd
@@ -391,6 +391,34 @@ def nepalonline(self, duration,fileName):
     url = store_s3(filecsv="napa.csv", folder=folder, filename=filename,FileName=fileName)
     return url
 
+
+@shared_task(bind=True)
+def laratask(self, duration,fileName):
+    progress_recorder = ProgressRecorder(self)
+    with open("lara.csv", 'w') as myfile:
+        wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+        # wr.writerow(["Input Part #","OE (Competitor Brand)","Competitor Part No.","Output – (WVE Part No.)","Part Type (Description)"])
+        wr.writerow(["IDNumber","EntityNameHead","EntityName","NameChange","EntityType","EntityIDNumber","EntityIDOldNumber","DateOfOrganization",
+                     "DateOfOrganizationInactive","Purpose","Term","ResidentAgentName","ResidentStreetAddress","ResidentApt","ResidentCity","ResidentState",
+                     "ResidentZip","PrincipleStreet","PrincipleApt","PrincipleCity","PrincipleState","PrincipleZip","ActFormedUnder","ManagedBy",
+                     "Name of filing","Year filed","Date filed","Filling No","View Pdf"])
+
+        total = len(duration)
+        for i,row in enumerate(duration):
+            a = webscraplara(row)
+            print(a)
+            progress_recorder.set_progress(i+1, total, row)
+            for b in a:
+                wr.writerow(b)
+            check = Switch_Scrap.objects.all()[0]
+            stop = check.stop
+            if stop:
+                break
+    a = File.objects.all().count()+1
+    filename="lara"+str(a)+".xlsx"
+    folder = "Lara"
+    url = store_s3(filecsv="lara.csv", folder=folder, filename=filename,FileName=fileName)
+    return url
 
 
 
