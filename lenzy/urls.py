@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,re_path,include
-from main.views import Userdetail,Airtex,Mootors,Autoparts,Carter,Opticat,Standard,BWD,Alllist,WVVE,Oreo,Autozone,Advance,Nepa,Stop
+from main.views import Userdetail,Airtex,Mootors,Autoparts,Carter,Opticat,Standard,BWD,Alllist,WVVE,Oreo,Autozone,Advance,Nepa,Stop,Lara
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -33,6 +33,8 @@ urlpatterns = [
     path('autozone/', Autozone.as_view()),
     path('advance/', Advance.as_view()),
     path('nepaonline/', Nepa.as_view()),
+    path('lara/', Lara.as_view()),
+
     path('stop/', Stop.as_view()),
 
     path('celery-progress/', include('celery_progress.urls')),
