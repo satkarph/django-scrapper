@@ -405,6 +405,8 @@ def laratask(self, duration,fileName):
 
         total = len(duration)
         for i,row in enumerate(duration):
+            if i==0:
+                continue
             a = webscraplara(row)
             print(a)
             progress_recorder.set_progress(i+1, total, row)
