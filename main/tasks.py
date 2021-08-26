@@ -205,7 +205,7 @@ def standard(self, duration,fileName):
     progress_recorder = ProgressRecorder(self)
     with open("standard.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
-        wr.writerow(["Input Part # (Mfg. Part Number)","Output - Part Number#","Part Type (Product Mfg. Name)","OE Number (Item/Part Description)"])
+        wr.writerow(["Input Part","Input Part # Description","Output - Part Number#","Part Type (Product Mfg. Name)","OE Number (Item/Part Description)"])
         total = len(duration)
         for i,row in enumerate(duration):
             a = scraper_standard(row)
