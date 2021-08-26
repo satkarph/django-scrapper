@@ -759,19 +759,14 @@ def webscraplara(part_id):
         a.find_element_by_id('SearchSubmit').click()
         time.sleep(3)
         page_source = a.page_source
-        f = open("demofile3.html", "w")
-        f.write(page_source)
-        f.close()
         soup = BeautifulSoup(page_source, 'lxml')
         ta = soup.find_all('table')
         table = ta[0]
         link = table.find_all('a', class_='link')
         print(link)
-        # for l in link:
-        #     print(l['href'])
         lin = link[0]['href']
         a.get(lin)
-        time.sleep(10)
+        time.sleep(2)
         page_source = a.page_source
         soup = BeautifulSoup(page_source, 'lxml')
 
@@ -817,7 +812,7 @@ def webscraplara(part_id):
         select.select_by_value('00A')
         a.find_element_by_id('MainContent_btnViewFilings').click()
         page_source = a.page_source
-        time.sleep(5)
+        time.sleep(2)
         soup = BeautifulSoup(page_source, 'lxml')
         try:
             table = soup.find("table", id="MainContent_grdSearchResults")
