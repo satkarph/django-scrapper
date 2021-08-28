@@ -759,14 +759,19 @@ def webscraplara(part_id):
         a.find_element_by_id('SearchSubmit').click()
         time.sleep(3)
         page_source = a.page_source
+        f = open("demofile3.html", "w")
+        f.write(page_source)
+        f.close()
         soup = BeautifulSoup(page_source, 'lxml')
         ta = soup.find_all('table')
         table = ta[0]
         link = table.find_all('a', class_='link')
         print(link)
+        # for l in link:
+        #     print(l['href'])
         lin = link[0]['href']
         a.get(lin)
-        time.sleep(2)
+        time.sleep(3)
         page_source = a.page_source
         soup = BeautifulSoup(page_source, 'lxml')
 
@@ -776,7 +781,12 @@ def webscraplara(part_id):
         entityname = main_name
         entitytype = soup.find("span", id="MainContent_lblEntityType").text
         identification_number = soup.find("span", id="MainContent_lblIDNumber").text
-        entity_ido_number = soup.find("span", id="MainContent_lblOldIDNumber").text
+        entity_ido_number = soup.find("span", id="MainContent_lblOldIDNumber")
+        if entity_ido_number:
+            entity_ido_number= entity_ido_number.text
+        else:
+            entity_ido_number=None
+
         date_of_org = soup.find("span", id="MainContent_lblOrganisationDate").text
         date_of_org_active = None
         purpose  = soup.find("span", id="MainContent_lblPurpose").text
@@ -799,7 +809,11 @@ def webscraplara(part_id):
 
         principlezip = soup.find("span", id="MainContent_lblPrincipleZip").text
 
-        act_under = soup.find("span", id="MainContent_lblActsFormedUnder").text
+        act_under = soup.find("span", id="MainContent_lblActsFormedUnder")
+        if act_under:
+            act_under=act_under.text
+        else:
+            act_under=None
         try:
             managed_by = soup.find("input", id="MainContent_Managedbytext")['value']
         except:
@@ -812,7 +826,7 @@ def webscraplara(part_id):
         select.select_by_value('00A')
         a.find_element_by_id('MainContent_btnViewFilings').click()
         page_source = a.page_source
-        time.sleep(2)
+        time.sleep(3)
         soup = BeautifulSoup(page_source, 'lxml')
         try:
             table = soup.find("table", id="MainContent_grdSearchResults")
