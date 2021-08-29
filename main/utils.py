@@ -838,6 +838,7 @@ def webscraplara(part_id):
             date_filling = tds[3].text
             filling_number = tds[4].text
             file_filling = tds[5].find('a')['href']
+            file_filling = "https://cofs.lara.state.mi.us/CorpWeb/CorpSearch/"+file_filling
         except:
             name_filling=None
             year_filling=None
