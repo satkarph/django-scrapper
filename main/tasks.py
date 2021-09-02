@@ -398,7 +398,7 @@ def laratask(self, duration,fileName):
     with open("lara.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         # wr.writerow(["Input Part #","OE (Competitor Brand)","Competitor Part No.","Output – (WVE Part No.)","Part Type (Description)"])
-        wr.writerow(["IDNumber","EntityNameHead","EntityName","NameChange","EntityType","EntityIDNumber","EntityIDOldNumber","DateOfOrganization",
+        wr.writerow(["Input Company Name","IDNumber","EntityNameHead","EntityName","NameChange","EntityType","EntityIDNumber","EntityIDOldNumber","DateOfOrganization",
                      "DateOfOrganizationInactive","Purpose","Term","ResidentAgentName","ResidentStreetAddress","ResidentApt","ResidentCity","ResidentState",
                      "ResidentZip","PrincipleStreet","PrincipleApt","PrincipleCity","PrincipleState","PrincipleZip","ActFormedUnder","ManagedBy",
                      "Name of filing","Year filed","Date filed","Filling No","View Pdf"])
