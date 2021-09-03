@@ -795,7 +795,7 @@ def webscraplara(part_id):
         print(date_of_org)
         print("----------------------------------------------------")
         term = soup.find("span", id="MainContent_lblTerm").text
-        resident_name = soup.find("span", id="MainContent_lblResidentAgentNamelbl").text
+        resident_name = soup.find("span", id="MainContent_lblResidentAgentName").text
 
         resident_steet_add = soup.find("span", id="MainContent_lblResidentStreet").text
         residentapt = soup.find("span", id="MainContent_lblaptsuiteother").text
