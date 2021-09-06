@@ -5,10 +5,11 @@ from .utils import scraper_spectra,airtex,scraper_usmotorworks,scraper_densoauto
 import csv
 import boto3
 import pandas as pd
-from .utils2 import store_s3
-
+from .utils2 import store_s3,northville_s3
+from .northville import scrape_northville
 import time
 from time import sleep
+import pandas as pd
 
 
 # @shared_task(bind=True)
@@ -424,4 +425,28 @@ def laratask(self, duration,fileName):
 
 
 
+@shared_task(bind=True)
+def northvilletask(self, duration,fileName):
+    progress_recorder = ProgressRecorder(self)
+    total = len(duration)
+    whole_data=[]
+    for i,row in enumerate(duration):
+        # if i==0:
+        #     continue
+        a = scrape_northville(row)
+        if a:
+            whole_data = whole_data + a
+        print("++++++++++++++++++++++++++++++++++++++++++++++++++")
+        progress_recorder.set_progress(i+1, total, row)
+        check = Switch_Scrap.objects.all()[0]
+        stop = check.stop
+        if stop:
+            break
+    a = File.objects.all().count()+1
+    merged_df = pd.concat(whole_data)
+    merged_df.to_csv('northville.csv')
+    folder = "northville"
+    filename="northville{0}.csv".format(str(a))
+    url = northville_s3(filecsv="northville.csv", folder=folder, filename=filename,FileName=fileName)
+    return url
 
