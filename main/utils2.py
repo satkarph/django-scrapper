@@ -25,13 +25,15 @@ def store_s3(filecsv,folder,filename,FileName):
 
 def northville_s3(filecsv,folder,filename,FileName):
     df = pd.read_csv(filecsv)
+    index = df.index
+    number_of_rows = len(index)
     bucketname = "scrapers1"
     csv_buffer = io.StringIO()
     df.to_csv(csv_buffer)
     s3 = boto3.resource('s3')
     s3.Bucket(bucketname).put_object(Key='{0}/{1}'.format(folder, filename), Body=csv_buffer.getvalue(), ACL='public-read')
     url = "https://{0}.s3.amazonaws.com/{1}/{2}".format(bucketname, folder, filename)
-    File.objects.create(name=folder,url=url,column=number_of_rows,fileName=FileName)
+    File.objects.create(name=folder,url=url,column=,fileName=FileName)
     return url
 
 
