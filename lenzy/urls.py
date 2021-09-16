@@ -35,7 +35,7 @@ urlpatterns = [
     path('nepaonline/', Nepa.as_view()),
     path('lara/', Lara.as_view()),
     path('northville/', Northville.as_view()),
-    path('social/',Socailmedia.as_view()),
+    path('socialmedia/',Socailmedia.as_view()),
 
     path('stop/', Stop.as_view()),
 
