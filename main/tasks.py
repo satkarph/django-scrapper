@@ -10,6 +10,7 @@ from .northville import scrape_northville
 import time
 from time import sleep
 import pandas as pd
+from .social import main_socailmedia
 
 
 # @shared_task(bind=True)
@@ -449,4 +450,42 @@ def northvilletask(self, duration,fileName):
     filename="northville{0}.csv".format(str(a))
     url = northville_s3(filecsv="northville.csv", folder=folder, filename=filename,FileName=fileName)
     return url
+
+
+
+
+@shared_task(bind=True)
+def socialmedia(self, duration,fileName):
+    progress_recorder = ProgressRecorder(self)
+    with open("social.csv", 'w') as myfile:
+        wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+        # wr.writerow(["Input Part #","OE (Competitor Brand)","Competitor Part No.","Output – (WVE Part No.)","Part Type (Description)"])
+        wr.writerow(['Input Company Name', 'Address', 'City', 'State', 'Zipcode', 'Website', 'latitude', 'Longitude', 'Facebook link', 'Facebook # followers', 'Facebook # Posts', 'Instagram link', 'Instagram # followers', 'Instagram # Posts', 'Twitter link', 'Twitter # followers', 'Twitter # Posts', 'LinkedIn link', 'LinkedIn # followers', 'LinkedIn # Posts', 'Pinterest link', 'Pinterest # followers', 'Pinterest # Posts'])
+
+        total = len(duration)
+        print(total)
+        for i, row in enumerate(duration):
+            if i==0:
+                continue
+            print("daaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+            print("i am ogonal data ")
+            print(row)
+            if row['company']==None:
+                break
+            print("daaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaataaaaaaaaaaaaaaaaaa")
+            a = main_socailmedia(row)
+
+            progress_recorder.set_progress(i + 1, total, row)
+            for b in a:
+                wr.writerow(b)
+            check = Switch_Scrap.objects.all()[0]
+            stop = check.stop
+            if stop:
+                break
+    a = File.objects.all().count() + 1
+    filename = "social" + str(a) + ".xlsx"
+    folder = "Socail"
+    url = store_s3(filecsv="social.csv", folder=folder, filename=filename, FileName=fileName)
+    return url
+
 
