@@ -211,7 +211,7 @@ def facebook_call(link):
         time.sleep(3)
 
         try:
-            driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div/div[3]/div/div/div[1]/div[1]/div[3]/div/div/div/div[2]/div/div/div[1]/div/div[2]')
+            followers = re.findall(r'(\d+) people follow', str(driver.page_source))[0]
         except:
             lenOfPage = driver.execute_script(
                 "window.scrollTo(0, document.body.scrollHeight);var lenOfPage=document.body.scrollHeight;return lenOfPage;")
