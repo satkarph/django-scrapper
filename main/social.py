@@ -209,6 +209,8 @@ def facebook_call(link):
         driver.get(link)
         driver.get(link)
         driver.get(link)
+        driver.save_screenshot("screenshot.png")
+
         time.sleep(3)
 
         try:
@@ -226,7 +228,6 @@ def facebook_call(link):
                     match = True
             followers, posts, address, latitude, longitude = next_facebook(driver.page_source)
             return posts, followers, address, latitude, longitude
-
 
         try:
             loc = driver.find_element_by_xpath(
