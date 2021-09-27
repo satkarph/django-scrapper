@@ -205,6 +205,7 @@ def facebook_call(link):
         login_button.click()  # Send mouse click
 
         link = link.replace('m.facebook', 'facebook')
+        link = link.replace('community/','')
         driver.get(link)
         driver.get(link)
         driver.get(link)
