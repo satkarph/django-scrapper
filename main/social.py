@@ -203,13 +203,14 @@ def facebook_call(link):
 
         login_button = driver.find_element_by_id('loginbutton')
         login_button.click()  # Send mouse click
+        driver.save_screenshot("screenshot1.png")
+
 
         link = link.replace('m.facebook', 'facebook')
         link = link.replace('community/','')
         driver.get(link)
         driver.get(link)
         driver.get(link)
-        driver.save_screenshot("screenshot.png")
 
         time.sleep(3)
 
