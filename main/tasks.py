@@ -460,19 +460,17 @@ def socialmedia(self, duration,fileName):
     with open("social.csv", 'w') as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         # wr.writerow(["Input Part #","OE (Competitor Brand)","Competitor Part No.","Output – (WVE Part No.)","Part Type (Description)"])
-        wr.writerow(['Input Company Name', 'Address', 'City', 'State', 'Zipcode', 'Website', 'latitude', 'Longitude', 'Facebook link', 'Facebook # followers', 'Facebook # Posts', 'Instagram link', 'Instagram # followers', 'Instagram # Posts', 'Twitter link', 'Twitter # followers', 'Twitter # Posts', 'LinkedIn link', 'LinkedIn # followers', 'LinkedIn # Posts', 'Pinterest link', 'Pinterest # followers', 'Pinterest # Posts'])
+        wr.writerow(['Input Company Name', "State","Zip" 'Facebook link','Twitter link','Instagram link','Linkdein link'])
 
         total = len(duration)
         print(total)
         for i, row in enumerate(duration):
             if i==0:
                 continue
-            print("daaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
             print("i am ogonal data ")
             print(row)
             if row['company']==None:
                 break
-            print("daaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaataaaaaaaaaaaaaaaaaa")
             a = main_socailmedia(row)
 
             progress_recorder.set_progress(i + 1, total, row)

@@ -88,7 +88,6 @@ def get_link_for_facebook(company,zip,state ):
             if text_to_find in txt.text or "Michigan" in txt.text:
                 hh = d.find('h3', class_='LC20lb')
                 data = hh.text.replace(' - Home | Facebook', '')
-                print("dddddddddd")
                 print(data)
                 score = fuzz.partial_ratio(company, data)
                 print(score)
@@ -98,7 +97,6 @@ def get_link_for_facebook(company,zip,state ):
                 print(data)
                 link = d.find('a', href=True)['href']
                 print(link)
-                print("hhih")
                 driver.quit()
                 if "facebook" in link:
                     return link
@@ -122,9 +120,7 @@ def get_link_for_twitter(company,zip,state):
         div = soup.find_all('div', class_='g')
         for d in div:
             txt = d.find('div', class_='IsZvec')
-            print("sssssssssssssssssssss")
             text_to_find = "MI USA"
-            print(text_to_find)
             if text_to_find in txt.text:
                 hh = d.find('h3', class_='LC20lb')
                 data = hh.text.replace(' - Home | Facebook', '')
@@ -134,9 +130,7 @@ def get_link_for_twitter(company,zip,state):
                 score = 0
             if score >94:
 
-                print(data)
                 link = d.find('a', href=True)['href']
-                print(link)
                 return link
 
         driver.quit()
@@ -158,25 +152,19 @@ def get_link_for_instagram(company,zip,state):
         div = soup.find_all('div', class_='g')
         for d in div:
             txt = d.find('div', class_='IsZvec')
-            print(txt.text)
             text_to_find = "MI"
-            print(text_to_find)
-            print("----------------")
             if text_to_find in txt.text:
                 hh = d.find('h3', class_='LC20lb')
                 data = hh.text.replace(' - Instagram', '')
                 data = re.sub("[\(\[].*?[\)\]]", "", data)
-                print(data)
-                print(query1)
+
                 score = fuzz.partial_ratio(company, data)
                 print(score)
                 print('score')
             else:
                 score=0
             if score > 92:
-                print(data)
                 link = d.find('a', href=True)['href']
-                print(link)
                 driver.quit()
                 return link
         driver.quit()
@@ -324,6 +312,39 @@ def instagram_call(link):
             pass
     return  None,None
 
+def get_link_linkdein(company,zip,state):
+    try:
+        query1=company + " {0} michigan Linkdein".format(zip)
+        print(query1)
+        driver = webdriver.Chrome( chrome_options=chrome_options)
+        driver.get('https://www.google.com/')
+        inp = driver.find_element_by_xpath('/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input')
+        inp.send_keys(query1)
+        inp.send_keys(Keys.RETURN)
+        page_source = driver.page_source
+        soup = BeautifulSoup(page_source, 'lxml')
+        div = soup.find_all('div', class_='g')
+        for d in div:
+            txt = d.find('div', class_='IsZvec')
+            text_to_find = "Michigan"
+
+            if text_to_find in txt.text:
+                hh = d.find('h3', class_='LC20lb')
+                print(hh.text)
+                data = hh.text.replace(' | LinkedIn', '')
+                score = fuzz.partial_ratio(query1, data)
+                print(score)
+            else:
+                score = 0
+            if score >85:
+                link = d.find('a', href=True)['href']
+                if "linkedin" in link:
+                    return link
+
+        driver.quit()
+        return None
+    except:
+        return None
 
 
 def main_socailmedia(data):
@@ -333,12 +354,10 @@ def main_socailmedia(data):
     state= data['state']
 
     link_facebook = get_link_for_facebook(company,zip,state)
-    fb_post,fb_followers,address,latitude,longitude = facebook_call(link_facebook)
     link_twitter = get_link_for_twitter(company,zip,state)
-    t_post,t_follwers = twitter_call(link_twitter)
     link_instagram = get_link_for_instagram(company,zip,state)
-    i_post,i_follower =instagram_call(link_instagram)
+    link_lindein=get_link_linkdein(company,zip,state)
 
-    data = [company,address,address,state,zip,None,latitude,longitude,link_facebook,fb_followers,fb_post,link_instagram,i_follower,i_post,link_twitter,t_follwers,t_post,None,None,None,None,None,None]
+    data = [company,state,zip,link_facebook,link_twitter,link_instagram,link_lindein]
     found_values.append(data)
     return  found_values
