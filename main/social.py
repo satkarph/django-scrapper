@@ -131,7 +131,8 @@ def get_link_for_twitter(company,zip,state):
             if score >94:
 
                 link = d.find('a', href=True)['href']
-                return link
+                if "twitter" in link:
+                    return link
 
         driver.quit()
         return None
@@ -166,7 +167,8 @@ def get_link_for_instagram(company,zip,state):
             if score > 92:
                 link = d.find('a', href=True)['href']
                 driver.quit()
-                return link
+                if "instagram" in link:
+                    return link
         driver.quit()
         return None
     except:
