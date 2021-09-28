@@ -486,7 +486,6 @@ class Socailmedia(APIView):
 
         data = list(filter(None, data))
         data = [d for d in data if d != "None"]
-        print(data)
 
         # # go_to_sleep.delay(uuid=["16147161387"])
         #
